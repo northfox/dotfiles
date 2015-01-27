@@ -76,19 +76,13 @@
 (setq frame-title-format "%f")
 
 ;; Set region color
-(set-face-background 'region "#000100")
+(set-face-background 'region "color-17")
 
 ;; Set highlight on current row
-(defface my-hl-line-face
-  '((((class color) (background dark))
-     (:background "NavyBlue" t))
-    (((class color) (background light))
-     (:background "LightGoldenrodYellow" t))
-    (t (:bold t)))
-  "hl-line's my face")
-(setq hi-line-face 'my-hl-line-face)
-(global-hl-line-mode 0)
-
+(set-face-background 'highlight "#222")
+(set-face-foreground 'highlight nil)
+(set-face-underline-p 'highlight t)
+(global-hl-line-mode t)
 
 ;;;; Use UTF-8
 ;; Prefer utf-8
