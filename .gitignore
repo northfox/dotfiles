@@ -1,5 +1,12 @@
+# common
 .*~
 *~
+*.swp
+.DS_Store
+.idea
+.secret
+
+# emacs
 /.emacs.d/*
 !/.emacs.d/init.el
 !/.emacs.d/conf

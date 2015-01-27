@@ -21,6 +21,10 @@
 (package-initialize)
 
 
+;;;; auto mode
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+
 ;;;; Usability
 ;; Set meta key on Mac's command key
 (when (eq system-type 'darwin)
@@ -68,7 +72,27 @@
 (setq-default indent-tabs-mode nil)
 (setq indent-line-function 'indent-relative-maybe)
 
-;; Use UTF-8
+;; Show file path on title bar
+(setq frame-title-format "%f")
+
+;; Set region color
+(set-face-background 'region "#000100")
+
+;; Set highlight on current row
+(defface my-hl-line-face
+  '((((class color) (background dark))
+     (:background "NavyBlue" t))
+    (((class color) (background light))
+     (:background "LightGoldenrodYellow" t))
+    (t (:bold t)))
+  "hl-line's my face")
+(setq hi-line-face 'my-hl-line-face)
+(global-hl-line-mode 0)
+
+
+;;;; Use UTF-8
+;; Prefer utf-8
+(prefer-coding-system 'utf-8)
 ;; ターミナルの文字コード
 (set-terminal-coding-system 'utf-8)
 ;; キーボードから入力される文字コード
@@ -79,9 +103,40 @@
 (setq default-buffer-file-coding-system 'utf-8)
 ;; ファイル名の文字コード
 (setq file-name-coding-system 'utf-8)
+;; Set File name on Mac *after Prefer utf-8
+(when (eq system-type 'darwin)
+  (require 'ucs-normalize)
+  (set-file-name-coding-system 'utf-8-hfs)
+  (setq locale-coding-system 'utf-8-hfs))
+;;Set File name on Win *after Prefer utf-8
+(when (eq window-system 'w32)
+  (set-file-name-coding-system 'cp932)
+  (setq locale-coding-system 'cp932))
 
-;; Set delete backward on C-h
-(define-key global-map "\C-h" 'delete-backward-char)
-;; Set help on C-?
-(define-key global-map "\M-?" 'help-for-help)
 
+;;;; Display on mode line
+;; columns/rows number
+(column-number-mode t)
+;; file size
+(size-indication-mode t)
+;; count lines/chars number with region
+(defun count-lines-and-chars ()
+  (if mark-active
+      (format "%d lines, %d chars "
+              (count-lines (region-beginning) (region-end))
+              (- (region-end) (region-beginning)))
+    ;; bright echo area
+    ;;(count-lines-region (region-beginning) (region-end))
+    ""))
+(add-to-list 'default-mode-line-format
+             '(:eval (count-lines-and-chars)))
+
+;;;; Keybind
+;; Delete backword on C-h
+(keyboard-translate ?\C-h ?\C-?)
+;; Toggle return at max rows on 'C-c l'
+(define-key global-map (kbd "C-c l") 'toggle-truncate-lines)
+;; Change emacs window on 'C-t'
+(define-key global-map (kbd "C-t") 'other-window)
+;; Help key on 'C-x ?'
+(define-key global-map (kbd "C-x ?") 'help-command)
