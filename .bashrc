@@ -15,3 +15,4 @@ alias ls='ls -G'
 alias C='pbcopy'
 alias L='| less'
 alias G='| grep'
+
