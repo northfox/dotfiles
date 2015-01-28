@@ -13,6 +13,6 @@ alias E='emacs -nw'
 alias ll='ls -alG'
 alias ls='ls -G'
 alias C='pbcopy'
-alias L='| less'
-alias G='| grep'
+alias L='less'
+alias G='grep'
 

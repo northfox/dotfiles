@@ -46,7 +46,6 @@
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 
-
 ;; On 行番号の表示
 (global-linum-mode t)
 (setq linum-format "%4d:") ; for 4 rows
@@ -83,6 +82,12 @@
 (set-face-foreground 'highlight nil)
 (set-face-underline-p 'highlight t)
 (global-hl-line-mode t)
+
+
+
+(setq frame-title-format
+            `(" GNU/Emacs " emacs-version " -- %b " (buffer-file-name "( %f )")))
+
 
 ;;;; Use UTF-8
 ;; Prefer utf-8
