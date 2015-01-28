@@ -1,4 +1,3 @@
-
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 ### Added by the Heroku Toolbelt
@@ -16,3 +15,7 @@ alias C='pbcopy'
 alias L='less'
 alias G='grep'
 
+# display title on display when cd
+function chpwd() {
+    ls; echo -ne "\033]0;$(pwd)\007"
+}
