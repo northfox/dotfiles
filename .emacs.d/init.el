@@ -21,8 +21,66 @@
 (package-initialize)
 
 
-;;;; auto mode
+;;;; Auto mode
+
+;; md
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(setq markdown-css-path
+      "/Users/vulpes/devtool/libs/css/kobito/default.css")
+
+
+;;;; Multi-term
+(defun ad-advised-definition-p (def) t)
+(defun multi-term-dedicated-handle-other-window-advice (def) t)
+  (when (require 'multi-term nil t)
+    ;;    (setq multi-term-program "/Users/vulpes/dotfiles/.bashrc")
+    )
+(add-hook 'term-mode-hook
+          (lambda ()
+            (define-key term-raw-map (kbd "C-t") 'other-window)))
+
+
+;;;; Helm
+(require 'helm-config)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "C-x C-r") 'helm-recentf)
+(global-set-key (kbd "C-x b") 'helm-buffers-list)
+(global-set-key (kbd "C-c i") 'helm-imenu)
+(when (require 'helm nil t)
+  (setq
+   helm-idle-delay 0.1 ; show time delay
+   helm-input-idle-delay 0.1 ; re-display time delay
+   helm-candidate-number-limit 100 ; limit number of candidate
+   helm-quick-update t ; performance up when too many candidate
+;;   helm-enable-shortcuts 'alphabet
+   ) ; choose key get be alphabet
+
+  (when (require 'helm-config nil t)
+    (setq helm-su-or-sudo "sudo")) ; execute sudo when root authority
+
+  (require 'helm-match-plugin nil t)
+
+  (when (and (executable-find "cmigemo")
+             (require 'migemo nil t))
+    (require 'helm-migemo nil t))
+
+  (when (require 'helm-complete nil t)
+    (helm-lisp-complete-symbol-set-timer 150)) ; re-search lisp symbol candidate
+
+  (require 'helm-show-completion nil t)
+
+  (when (require 'auto-install nil t)
+    (require 'helm-auto-install nil t))
+
+  (when (require 'descbinds-helm nil t)
+    descbinds-helm-install)) ; describe-bindings change to helm
+
+
+;;;; Require
+;; auto-complete
+(require 'auto-complete-config)
+(ac-config-default)
 
 
 ;;;; Usability
@@ -36,31 +94,33 @@
 ;; Show existing キーバインド when push 'M-x ...'
 (setq suggest-key-bindings 5) ; for 5 seconds
 
-;; バックアップ・自動保存
-(setq auto-save-default t)      ; on
-(setq make-backup-files nil)    ; off
-(setq vc-make-backup-files nil) ; off
+;; On バックアップ・自動保存 in temporary directory
+(add-to-list 'backup-directory-alist
+             (cons "." "~/.emacs.d/backups"))
+(setq auto-save-file-name-transforms
+      `((".*" ,(expand-file-name "~/.emacs.d/backups/") t)))
+(setq auto-save-default t)     ; on
+(setq make-backup-files t)     ; on
+(setq vc-make-backup-files t)  ; on
 
 ;; Mac で GUI から起動しても、シェルの PATH 環境変数を引き継ぐ
-;; - http://qiita.com/catatsuy/items/3dda714f4c60c435bb25
+; - http://qiita.com/catatsuy/items/3dda714f4c60c435bb25
+(defun exec-path-from-shell-initialize ()
+    "Set up PATH by the user's shell."
+    (interactive)
+    (let ((path-from-shell (replace-regexp-in-string "[ \t\n]*$" "" (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+      (setenv "PATH" path-from-shell)
+          (setq exec-path (split-string path-from-shell path-separator))))
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
-
-;; On 行番号の表示
-(global-linum-mode t)
-(setq linum-format "%4d:") ; for 4 rows
-
-;; On 対応するカッコを強調表示
-(show-paren-mode t)
-(setq show-paren-style 'mixed) ; `parenthesis' or `expression' or `mixed'
 
 ;; On 他で変更されたら再読込
 (global-auto-revert-mode +1)
 
 ;; On 補完時の大文字小文字区別
 (setq completion-ignore-case t)
-;; (setq read-file-name-completion-ignore-case t)
-;; (setq read-buffer-completion-ignore-case t)
+  ;; (setq read-file-name-completion-ignore-case t)
+  ;; (setq read-buffer-completion-ignore-case t)
 
 ;; On 検索時の大文字小文字の区別
 (setq-default case-fold-search t)
@@ -71,8 +131,49 @@
 (setq-default indent-tabs-mode nil)
 (setq indent-line-function 'indent-relative-maybe)
 
+
+;;;; Hook
+;; Chmod +x when save script file
+(add-hook 'after-save-hook
+          'executable-make-buffer-file-executable-if-script-p)
+
+;; Display value of elisp
+(defun elisp-mode-hooks ()
+  "elisp-mode-hooks"
+  (when (require 'eldoc nil t)
+    (setq eldoc-idle-delay 0.2)
+    (setq eldoc-echo-area-use-multiline-p t)
+    (turn-on-eldoc-mode)))
+(add-hook 'emacs-lisp-mode-hook 'elisp-mode-hooks)
+
+;; Don't auto-delete-whitespace on markdown-mode
+(defun markdown-turn-off-whitespace-action ()
+  "markdown-mode-turn-off-whitespace-action-hook"
+  (setq whitespace-action nil))
+(add-hook 'markdown-mode-hook 'markdown-turn-off-whitespace-action)
+
+;; As soon as compile then save on markdown-mode
+(defun markdown-auto-compile-hook ()
+  "markdown-auto-compile-hook"
+  (when (eq major-mode 'markdown-mode)
+    (markdown-export) nil))
+(add-hook 'after-save-hook 'markdown-auto-compile-hook)
+
+
+;;;; Interface
+;; On 行番号の表示
+(global-linum-mode t)
+(setq linum-format "%4d:") ; for 4 rows
+
+;; On 対応するカッコを強調表示
+(setq show-parent-delay 0)
+(show-paren-mode t)
+(setq show-paren-style 'mixed) ; `parenthesis' or `expression' or `mixed'
+(set-face-background 'show-paren-match-face "#07a")
+  ;(set-face-underline-p 'show-paren-match-face "yellow")
+
 ;; Show file path on title bar
-(setq frame-title-format "%f")
+  ;(setq frame-title-format "%f")
 
 ;; Set region color
 (set-face-background 'region "color-17")
@@ -80,13 +181,8 @@
 ;; Set highlight on current row
 (set-face-background 'highlight "#222")
 (set-face-foreground 'highlight nil)
-(set-face-underline-p 'highlight t)
+  ;(set-face-underline-p 'highlight "#aaf")
 (global-hl-line-mode t)
-
-
-
-(setq frame-title-format
-            `(" GNU/Emacs " emacs-version " -- %b " (buffer-file-name "( %f )")))
 
 
 ;;;; Use UTF-8
