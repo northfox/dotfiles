@@ -58,14 +58,14 @@
 ;; md
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 (setq markdown-css-path
-      "/Users/vulpes/devtool/libs/css/kobito/default.css")
+      "~/devtool/libs/css/md-default.css")
 
 
 ;;;; Multi-term
 (defun ad-advised-definition-p (def) t)
 (defun multi-term-dedicated-handle-other-window-advice (def) t)
   (when (require 'multi-term nil t)
-    ;;    (setq multi-term-program "/Users/vulpes/dotfiles/.bashrc")
+    ;;    (setq multi-term-program "~/dotfiles/.bashrc")
     )
 (add-hook 'term-mode-hook
           (lambda ()
@@ -208,7 +208,7 @@
   ;(setq frame-title-format "%f")
 
 ;; Set region color
-(set-face-background 'region "color-17")
+(set-face-background 'region "#22a")
 
 ;; Set highlight on current row
 (set-face-background 'highlight "#222")
