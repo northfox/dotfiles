@@ -14,11 +14,43 @@
                      (normal-top-level-add-subdirs-to-load-path))))))
 (add-to-load-path "elisp" "conf" "public_repos")
 
-;; On パッケージ管理
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(package-initialize)
+;; Install package if isn't exist
+(defvar my/favorite-packages
+  '(
+    async
+    auto-complete
+    dash
+    emmet-mode
+    epl
+    expand-region
+    flycheck
+    helm
+    let-alist
+    markdown-mode
+    multi-term
+    multiple-cursors
+    pkg-info
+    popup
+    smartparens
+    undo-tree
+    )
+    "package list for auto install")
+(eval-when-compile
+  (require 'cl))
+(when (require 'package nil t)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+  (package-initialize)
+  (let ((pkgs (loop for pkg in my/favorite-packages
+                    unless (package-installed-p pkg)
+                    collect pkg)))
+    (when pkgs
+      ;; check for new packages (package versions)
+      (message "%s" "Get latest versions of all packages...")
+      (package-refresh-contents)
+      (message "%s" " done.")
+      (dolist (pkg pkgs)
+        (package-install pkg)))))
 
 
 ;;;; Auto mode
@@ -45,7 +77,7 @@
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (global-set-key (kbd "C-x C-r") 'helm-recentf)
-(global-set-key (kbd "C-x b") 'helm-buffers-list)
+(global-set-key (kbd "C-x C-b") 'helm-buffers-list)
 (global-set-key (kbd "C-c i") 'helm-imenu)
 (when (require 'helm nil t)
   (setq
