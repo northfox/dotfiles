@@ -25,7 +25,7 @@
     expand-region
     flycheck
     helm
-    let-alist
+    helm-descbinds
     markdown-mode
     multi-term
     multiple-cursors
@@ -33,6 +33,9 @@
     popup
     smartparens
     undo-tree
+    web-mode
+    volatile-highlights
+    undohist
     )
     "package list for auto install")
 (eval-when-compile
@@ -55,17 +58,23 @@
 
 ;;;; Auto mode
 
-;; md
+;; markdown-mode
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 (setq markdown-css-path
-      "~/devtool/libs/css/md-default.css")
+      "./css/md-default.css")
 
+;; web-mode
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
+(set-face-attribute 'web-mode-symbol-face nil :foreground "#aa0")
+(set-face-attribute 'web-mode-html-tag-bracket-face nil :foreground "#777")
+(set-face-attribute 'web-mode-html-tag-face nil :foreground "#aaa")
 
 ;;;; Multi-term
 (defun ad-advised-definition-p (def) t)
 (defun multi-term-dedicated-handle-other-window-advice (def) t)
   (when (require 'multi-term nil t)
-    ;;    (setq multi-term-program "~/dotfiles/.bashrc")
+    ;;    (setq multi-term-program "~/.bashrc")
     )
 (add-hook 'term-mode-hook
           (lambda ()
@@ -79,6 +88,9 @@
 (global-set-key (kbd "C-x C-r") 'helm-recentf)
 (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
 (global-set-key (kbd "C-c i") 'helm-imenu)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "C-M-o") 'helm-occur)
+
 (when (require 'helm nil t)
   (setq
    helm-idle-delay 0.1 ; show time delay
@@ -105,14 +117,37 @@
   (when (require 'auto-install nil t)
     (require 'helm-auto-install nil t))
 
-  (when (require 'descbinds-helm nil t)
-    descbinds-helm-install)) ; describe-bindings change to helm
+  ;; for helm
+  ;; (when (require 'color-moccur nil t)
+  ;;   (require 'helm-regexp)
+  ;;   (define-key helm-moccur-map (kbd "C-s") 'moccur-from-helm-moccur))
+
+  
+  (when (require 'helm-descbinds nil t)
+    (helm-descbinds-mode))) ; describe-bindings change to helm
 
 
 ;;;; Require
 ;; auto-complete
 (require 'auto-complete-config)
 (ac-config-default)
+
+;; undo-tree
+(require 'undo-tree)
+(global-undo-tree-mode t)
+
+;; undohist
+(require 'undohist)
+(undohist-initialize)
+
+;; volatile-highlights
+(require 'volatile-highlights)
+(volatile-highlights-mode t)
+(set-face-attribute 'vhl/default-face nil :background "SkyBlue4")
+
+;; smartparens
+(require 'smartparens-config)
+(smartparens-global-mode t)
 
 
 ;;;; Usability
