@@ -56,6 +56,10 @@
         (package-install pkg)))))
 
 
+;;;; theme
+(load-theme 'hc-zenburn t)
+
+
 ;;;; Auto mode
 
 ;; markdown-mode
@@ -66,9 +70,9 @@
 ;; web-mode
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
-(set-face-attribute 'web-mode-symbol-face nil :foreground "#aa0")
-(set-face-attribute 'web-mode-html-tag-bracket-face nil :foreground "#777")
-(set-face-attribute 'web-mode-html-tag-face nil :foreground "#aaa")
+;; (set-face-attribute 'web-mode-symbol-face nil :foreground "#aa0")
+;; (set-face-attribute 'web-mode-html-tag-bracket-face nil :foreground "#777")
+;; (set-face-attribute 'web-mode-html-tag-face nil :foreground "#aaa")
 
 ;;;; Multi-term
 (defun ad-advised-definition-p (def) t)
@@ -122,7 +126,6 @@
   ;;   (require 'helm-regexp)
   ;;   (define-key helm-moccur-map (kbd "C-s") 'moccur-from-helm-moccur))
 
-  
   (when (require 'helm-descbinds nil t)
     (helm-descbinds-mode))) ; describe-bindings change to helm
 
@@ -148,6 +151,14 @@
 ;; smartparens
 (require 'smartparens-config)
 (smartparens-global-mode t)
+
+;; moccur
+(when (and (require 'color-moccur nil t)
+           (require 'moccur-edit nil t))
+  ;; AND検索
+  (setq moccur-split-word t)
+  ;; ディレクトリ検索のときに除外するファイル
+    (add-to-list 'dmoccur-exclusion-mask "\\.DS_Store"))
 
 
 ;;;; Usability
@@ -198,6 +209,12 @@
 (setq-default indent-tabs-mode nil)
 (setq indent-line-function 'indent-relative-maybe)
 
+;; hide startup page
+(setq inhibit-startup-screen t)
+
+;; hide scratch initial message
+(setq initial-scratch-message "")
+
 
 ;;;; Hook
 ;; Chmod +x when save script file
@@ -228,28 +245,48 @@
 
 
 ;;;; Interface
-;; On 行番号の表示
+;; On 行番号の表示 for 4 rows
 (global-linum-mode t)
-(setq linum-format "%4d:") ; for 4 rows
+(set-face-attribute 'linum nil
+                    :foreground "#555")
+(setq linum-format "%4d")
 
 ;; On 対応するカッコを強調表示
 (setq show-parent-delay 0)
 (show-paren-mode t)
 (setq show-paren-style 'mixed) ; `parenthesis' or `expression' or `mixed'
-(set-face-background 'show-paren-match-face "#07a")
+;; (set-face-background 'show-paren-match-face "#07a")
   ;(set-face-underline-p 'show-paren-match-face "yellow")
 
 ;; Show file path on title bar
   ;(setq frame-title-format "%f")
 
 ;; Set region color
-(set-face-background 'region "#22a")
+  ; (set-face-background 'region "#22a")
 
 ;; Set highlight on current row
-(set-face-background 'highlight "#222")
-(set-face-foreground 'highlight nil)
-  ;(set-face-underline-p 'highlight "#aaf")
 (global-hl-line-mode t)
+(set-face-background 'hl-line "#3a3f3d")
+  ;;(set-face-attribute 'highlight nil :foreground 'unspecified)
+  ;; (set-face-foreground 'highlight nil)
+  ;; (set-face-background 'highlight "#f00")
+  ;; (custom-set-faces
+  ;; '(highlight ((t (:background "#f00" :foreground "black" :bold t))))
+  ;; )
+  ;; (set-face-underline-p 'highlight "#aaf")
+
+;; hilight trailing whitespace
+(setq-default show-trailing-whitespace t)
+
+;; yes or no -> y or n
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; height between row and row
+  ; (setq-default line-spacing 0)
+
+;; enable rectangular selection
+  ;(cua-mode t)
+  ;(setq cua-enable-cua-keys (kbd "C-M-@"))
 
 
 ;;;; Use UTF-8
@@ -302,3 +339,4 @@
 (define-key global-map (kbd "C-t") 'other-window)
 ;; Help key on 'C-x ?'
 (define-key global-map (kbd "C-x ?") 'help-command)
+
