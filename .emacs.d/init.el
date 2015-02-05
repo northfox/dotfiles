@@ -88,7 +88,7 @@
 ;;;; Helm
 (require 'helm-config)
 (global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
+  ;(global-set-key (kbd "C-x C-f") 'helm-find-files)
 (global-set-key (kbd "C-x C-r") 'helm-recentf)
 (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
 (global-set-key (kbd "C-c i") 'helm-imenu)
@@ -158,7 +158,11 @@
   ;; AND検索
   (setq moccur-split-word t)
   ;; ディレクトリ検索のときに除外するファイル
-    (add-to-list 'dmoccur-exclusion-mask "\\.DS_Store"))
+  (add-to-list 'dmoccur-exclusion-mask "\\.DS_Store"))
+
+;; wdired
+(require 'wdired)
+(define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
 
 
 ;;;; Usability
@@ -277,6 +281,8 @@
 
 ;; hilight trailing whitespace
 (setq-default show-trailing-whitespace t)
+(set-face-attribute 'trailing-whitespace nil
+                    :background "#444444")
 
 ;; yes or no -> y or n
 (fset 'yes-or-no-p 'y-or-n-p)
