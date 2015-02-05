@@ -36,6 +36,7 @@
     web-mode
     volatile-highlights
     undohist
+    hc-zenburn-theme
     )
     "package list for auto install")
 (eval-when-compile
