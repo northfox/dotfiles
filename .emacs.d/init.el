@@ -133,8 +133,9 @@
 
 ;;;; Require
 ;; auto-complete
-(require 'auto-complete-config)
-(ac-config-default)
+(when (require 'auto-complete-config nil t)
+  (ac-config-default)
+  (define-key ac-mode-map (kbd "M-TAB") 'auto-complete))
 
 ;; undo-tree
 (require 'undo-tree)
@@ -214,12 +215,6 @@
 (setq-default indent-tabs-mode nil)
 (setq indent-line-function 'indent-relative-maybe)
 
-;; hide startup page
-(setq inhibit-startup-screen t)
-
-;; hide scratch initial message
-(setq initial-scratch-message "")
-
 
 ;;;; Hook
 ;; Chmod +x when save script file
@@ -247,6 +242,14 @@
   (when (eq major-mode 'markdown-mode)
     (markdown-export) nil))
 (add-hook 'after-save-hook 'markdown-auto-compile-hook)
+
+;; Set 2:1 for helf-char/full-char size
+(setq face-font-rescale-alist
+      '((".*Menlo.*" . 1.0)
+        (".*Hiragino_Mincho_ProN.*" . 1.2)
+        (".*nfmotoyacedar-bold.*" . 1.2)
+        (".*nfmotoyacedar-medium.*" . 1.2)
+        (".*-cdac$.*" . 1.3)))
 
 
 ;;;; Interface
@@ -294,6 +297,15 @@
 ;; enable rectangular selection
   ;(cua-mode t)
   ;(setq cua-enable-cua-keys (kbd "C-M-@"))
+
+;; hide startup page
+(setq inhibit-startup-screen t)
+
+;; hide scratch initial message
+(setq initial-scratch-message "")
+
+;; hide menu bar
+(menu-bar-mode 0)
 
 
 ;;;; Use UTF-8
