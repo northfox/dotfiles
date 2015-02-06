@@ -1,4 +1,13 @@
+autocmd!
 syntax enable
+
+" for editing to vimrc
+nnoremap <Space>. :<C-u>edit $MYVIMRC<Enter>
+nnoremap <Space>s. :<C-u>source $MYVIMRC<Enter>
+
+" highlight
+autocmd WinEnter * setlocal cursorline
+autocmd WinLeave * setlocal nocursorline
 
 set number
 set ruler
@@ -20,7 +29,7 @@ set tabstop=2
 set shiftwidth=2
 set helplang=en
 
-"colorscheme desert
+colorscheme desert
 
 nnoremap <Space>w  :<C-u>w<CR>
 nnoremap <Space>q  :<C-u>q<CR>
