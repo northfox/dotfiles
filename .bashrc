@@ -19,6 +19,7 @@ if [ "$(uname)" == 'Darwin' ]; then
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     # for linux
     alias C='cbcopy'
+    alias emacs='emacs -nw'
     alias E='emacs -nw'
     alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
     alias aptitude-list='aptitude search "~i"'
