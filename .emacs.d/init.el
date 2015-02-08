@@ -14,6 +14,18 @@
                      (normal-top-level-add-subdirs-to-load-path))))))
 (add-to-load-path "elisp" "conf" "public_repos")
 
+;; system-type predicates
+(setq darwin-p  (eq system-type 'darwin)
+      ns-p      (eq window-system 'ns)
+      carbon-p  (eq window-system 'mac)
+      w32-p     (eq window-system 'w32)
+      linux-p   (eq system-type 'gnu/linux)
+      cygwin-p  (eq system-type 'cygwin)
+      nt-p      (eq system-type 'windows-nt)
+      meadow-p  (featurep 'meadow)
+      windows-p (or cygwin-p nt-p meadow-p w32-p))
+
+
 ;; Install package if isn't exist
 (defvar my/favorite-packages
   '(
@@ -169,7 +181,7 @@
 
 ;;;; Usability
 ;; Set meta key on Mac's command key
-(when (eq system-type 'darwin)
+(when darwin-p
     (setq ns-command-modifier (quote meta)))
 
 ;; On カーソルコピー
@@ -244,12 +256,13 @@
 (add-hook 'after-save-hook 'markdown-auto-compile-hook)
 
 ;; Set 2:1 for helf-char/full-char size
-(setq face-font-rescale-alist
-      '((".*Menlo.*" . 1.0)
-        (".*Hiragino_Mincho_ProN.*" . 1.2)
-        (".*nfmotoyacedar-bold.*" . 1.2)
-        (".*nfmotoyacedar-medium.*" . 1.2)
-        (".*-cdac$.*" . 1.3)))
+(when darwin-p
+  (setq face-font-rescale-alist
+        '((".*Menlo.*" . 1.0)
+          (".*Hiragino_Mincho_ProN.*" . 1.2)
+          (".*nfmotoyacedar-bold.*" . 1.2)
+          (".*nfmotoyacedar-medium.*" . 1.2)
+          (".*-cdac$.*" . 1.3))))
 
 
 ;;;; Interface
@@ -319,15 +332,15 @@
 (set-buffer-file-coding-system 'utf-8)
 ;; バッファのプロセスの文字コード
 (setq default-buffer-file-coding-system 'utf-8)
-;; ファイル名の文字コード
+;; フ<<ァイル名の文字コード
 (setq file-name-coding-system 'utf-8)
 ;; Set File name on Mac *after Prefer utf-8
-(when (eq system-type 'darwin)
+(when darwin-p
   (require 'ucs-normalize)
   (set-file-name-coding-system 'utf-8-hfs)
   (setq locale-coding-system 'utf-8-hfs))
 ;;Set File name on Win *after Prefer utf-8
-(when (eq window-system 'w32)
+(when windows-p
   (set-file-name-coding-system 'cp932)
   (setq locale-coding-system 'cp932))
 
@@ -358,4 +371,5 @@
 (define-key global-map (kbd "C-t") 'other-window)
 ;; Help key on 'C-x ?'
 (define-key global-map (kbd "C-x ?") 'help-command)
+
 

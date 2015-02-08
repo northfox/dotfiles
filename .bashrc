@@ -1,4 +1,5 @@
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+# Add RVM to PATH for scripting
+export PATH="$PATH:$HOME/.rvm/bin"
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
@@ -6,6 +7,9 @@ export PATH="/usr/local/heroku/bin:$PATH"
 # postgre sql
 export PGDATA=/usr/local/var/postgres
 export DATABASE_URL=postgres:///$(whoami)
+
+# color
+export TERM=xterm-256color
 
 # alias
 if [ "$(uname)" == 'Darwin' ]; then
@@ -18,7 +22,6 @@ if [ "$(uname)" == 'Darwin' ]; then
     alias G='grep'
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     # for linux
-
     export PATH="$HOME/.rbenv/bin:$PATH"
     eval "$(rbenv init -)"
 
