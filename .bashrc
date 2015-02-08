@@ -18,6 +18,10 @@ if [ "$(uname)" == 'Darwin' ]; then
     alias G='grep'
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     # for linux
+
+    export PATH="$HOME/.rbenv/bin:$PATH"
+    eval "$(rbenv init -)"
+
     alias C='cbcopy'
     alias emacs='emacs -nw'
     alias E='emacs -nw'
