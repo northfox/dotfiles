@@ -25,6 +25,7 @@
     expand-region
     flycheck
     helm
+    helm-descbinds
     markdown-mode
     multi-term
     multiple-cursors
@@ -32,6 +33,10 @@
     popup
     smartparens
     undo-tree
+    web-mode
+    volatile-highlights
+    undohist
+    hc-zenburn-theme
     )
     "package list for auto install")
 (eval-when-compile
@@ -52,13 +57,23 @@
         (package-install pkg)))))
 
 
+;;;; theme
+(load-theme 'hc-zenburn t)
+
+
 ;;;; Auto mode
 
-;; md
+;; markdown-mode
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 (setq markdown-css-path
-      "~/devtool/libs/css/md-default.css")
+      "./css/md-default.css")
 
+;; web-mode
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
+;; (set-face-attribute 'web-mode-symbol-face nil :foreground "#aa0")
+;; (set-face-attribute 'web-mode-html-tag-bracket-face nil :foreground "#777")
+;; (set-face-attribute 'web-mode-html-tag-face nil :foreground "#aaa")
 
 ;;;; Multi-term
 (defun ad-advised-definition-p (def) t)
@@ -74,10 +89,13 @@
 ;;;; Helm
 (require 'helm-config)
 (global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
+  ;(global-set-key (kbd "C-x C-f") 'helm-find-files)
 (global-set-key (kbd "C-x C-r") 'helm-recentf)
 (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
 (global-set-key (kbd "C-c i") 'helm-imenu)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "C-M-o") 'helm-occur)
+
 (when (require 'helm nil t)
   (setq
    helm-idle-delay 0.1 ; show time delay
@@ -104,14 +122,49 @@
   (when (require 'auto-install nil t)
     (require 'helm-auto-install nil t))
 
-  (when (require 'descbinds-helm nil t)
-    descbinds-helm-install)) ; describe-bindings change to helm
+  ;; for helm
+  ;; (when (require 'color-moccur nil t)
+  ;;   (require 'helm-regexp)
+  ;;   (define-key helm-moccur-map (kbd "C-s") 'moccur-from-helm-moccur))
+
+  (when (require 'helm-descbinds nil t)
+    (helm-descbinds-mode))) ; describe-bindings change to helm
 
 
 ;;;; Require
 ;; auto-complete
-(require 'auto-complete-config)
-(ac-config-default)
+(when (require 'auto-complete-config nil t)
+  (ac-config-default)
+  (define-key ac-mode-map (kbd "M-TAB") 'auto-complete))
+
+;; undo-tree
+(require 'undo-tree)
+(global-undo-tree-mode t)
+
+;; undohist
+(require 'undohist)
+(undohist-initialize)
+
+;; volatile-highlights
+(require 'volatile-highlights)
+(volatile-highlights-mode t)
+(set-face-attribute 'vhl/default-face nil :background "SkyBlue4")
+
+;; smartparens
+(require 'smartparens-config)
+(smartparens-global-mode t)
+
+;; moccur
+(when (and (require 'color-moccur nil t)
+           (require 'moccur-edit nil t))
+  ;; AND検索
+  (setq moccur-split-word t)
+  ;; ディレクトリ検索のときに除外するファイル
+  (add-to-list 'dmoccur-exclusion-mask "\\.DS_Store"))
+
+;; wdired
+(require 'wdired)
+(define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
 
 
 ;;;; Usability
@@ -190,31 +243,69 @@
     (markdown-export) nil))
 (add-hook 'after-save-hook 'markdown-auto-compile-hook)
 
+;; Set 2:1 for helf-char/full-char size
+(setq face-font-rescale-alist
+      '((".*Menlo.*" . 1.0)
+        (".*Hiragino_Mincho_ProN.*" . 1.2)
+        (".*nfmotoyacedar-bold.*" . 1.2)
+        (".*nfmotoyacedar-medium.*" . 1.2)
+        (".*-cdac$.*" . 1.3)))
+
 
 ;;;; Interface
-;; On 行番号の表示
+;; On 行番号の表示 for 4 rows
 (global-linum-mode t)
-(setq linum-format "%4d:") ; for 4 rows
+(set-face-attribute 'linum nil
+                    :foreground "#555")
+(setq linum-format "%4d")
 
 ;; On 対応するカッコを強調表示
 (setq show-parent-delay 0)
 (show-paren-mode t)
 (setq show-paren-style 'mixed) ; `parenthesis' or `expression' or `mixed'
-(set-face-background 'show-paren-match-face "#07a")
+;; (set-face-background 'show-paren-match-face "#07a")
   ;(set-face-underline-p 'show-paren-match-face "yellow")
 
 ;; Show file path on title bar
   ;(setq frame-title-format "%f")
 
 ;; Set region color
-(set-face-background 'region "#22a")
-;(set-face-background 'region "color-17")
+  ; (set-face-background 'region "#22a")
 
 ;; Set highlight on current row
-(set-face-background 'highlight "#222")
-(set-face-foreground 'highlight nil)
-  ;(set-face-underline-p 'highlight "#aaf")
 (global-hl-line-mode t)
+(set-face-background 'hl-line "#3a3f3d")
+  ;;(set-face-attribute 'highlight nil :foreground 'unspecified)
+  ;; (set-face-foreground 'highlight nil)
+  ;; (set-face-background 'highlight "#f00")
+  ;; (custom-set-faces
+  ;; '(highlight ((t (:background "#f00" :foreground "black" :bold t))))
+  ;; )
+  ;; (set-face-underline-p 'highlight "#aaf")
+
+;; hilight trailing whitespace
+(setq-default show-trailing-whitespace t)
+(set-face-attribute 'trailing-whitespace nil
+                    :background "#444444")
+
+;; yes or no -> y or n
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; height between row and row
+  ; (setq-default line-spacing 0)
+
+;; enable rectangular selection
+  ;(cua-mode t)
+  ;(setq cua-enable-cua-keys (kbd "C-M-@"))
+
+;; hide startup page
+(setq inhibit-startup-screen t)
+
+;; hide scratch initial message
+(setq initial-scratch-message "")
+
+;; hide menu bar
+(menu-bar-mode 0)
 
 
 ;;;; Use UTF-8
@@ -267,3 +358,4 @@
 (define-key global-map (kbd "C-t") 'other-window)
 ;; Help key on 'C-x ?'
 (define-key global-map (kbd "C-x ?") 'help-command)
+

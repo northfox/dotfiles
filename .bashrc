@@ -43,7 +43,6 @@ else
     exit 1
 fi
 
-
 # display title on display when cd
 function chpwd() {
     ls; echo -ne "\033]0;$(pwd)\007"
@@ -56,3 +55,4 @@ function share_history() {
     history -r
 }
 PROMPT_COMMAND='share_history'
+
