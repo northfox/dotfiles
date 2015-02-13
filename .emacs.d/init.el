@@ -1,3 +1,9 @@
+;;;;; init.el --- initialize emacs
+
+;;;;; Commentary:
+;;;; for Web/App develop and study some subjects.
+
+;;;;; Code:
 ;;;; Prepare
 ;; Define user-emacs-directory if older than ver.23
 (when (> emacs-major-version 23)
@@ -77,8 +83,7 @@
 
 ;; markdown-mode
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-(setq markdown-css-path
-      "./css/md-default.css")
+(setq markdown-css-path "./css/md-default.css")
 
 ;; web-mode
 (require 'web-mode)
@@ -144,6 +149,11 @@
 
 
 ;;;; Require
+;; point-undo
+(when (require 'point-undo nil t)
+  (define-key global-map [f5] 'point-undo)
+  (define-key global-map [f6] 'point-redo))
+
 ;; auto-complete
 (when (require 'auto-complete-config nil t)
   (ac-config-default)
@@ -178,6 +188,9 @@
 (require 'wdired)
 (define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
 
+
+;; wgrep
+(require 'wgrep nil t)
 
 ;;;; Usability
 ;; Set meta key on Mac's command key
@@ -222,7 +235,6 @@
 (setq-default case-fold-search t)
 
 ;; On タブではなくスペースを使う
-(setq-default tab-width 2)
 (setq default-tab-width 2)
 (setq-default indent-tabs-mode nil)
 (setq indent-line-function 'indent-relative-maybe)
@@ -255,6 +267,16 @@
     (markdown-export) nil))
 (add-hook 'after-save-hook 'markdown-auto-compile-hook)
 
+;; tab-width each mode
+(add-hook 'web-mode-hook '(lambda ()
+                            (setq tab-width 2)
+                            (setq web-mode-markup-indent-offset 2)))
+
+;; flycheck mode
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+
+;;;; Interface
 ;; Set 2:1 for helf-char/full-char size
 (when darwin-p
   (setq face-font-rescale-alist
@@ -264,8 +286,6 @@
           (".*nfmotoyacedar-medium.*" . 1.2)
           (".*-cdac$.*" . 1.3))))
 
-
-;;;; Interface
 ;; On 行番号の表示 for 4 rows
 (global-linum-mode t)
 (set-face-attribute 'linum nil
@@ -372,4 +392,4 @@
 ;; Help key on 'C-x ?'
 (define-key global-map (kbd "C-x ?") 'help-command)
 
-
+;;; init.el ends here
