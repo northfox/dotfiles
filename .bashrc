@@ -20,6 +20,7 @@ if [ "$(uname)" == 'Darwin' ]; then
     alias C='pbcopy'
     alias L='less'
     alias G='grep'
+
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     # for linux
     export PATH="$HOME/.rbenv/bin:$PATH"
@@ -38,9 +39,11 @@ elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     alias la='ls -A'
     alias ll='ls -alF'
     alias ls='ls --color=auto'
+    
 elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
     # for cygwin
     echo "Please, set settings for cygwin."
+    
 else
     echo "Your platform ($(uname -a)) is not supported."
     exit 1
