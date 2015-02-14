@@ -42,19 +42,21 @@
     epl
     expand-region
     flycheck
+    hc-zenburn-theme
     helm
     helm-descbinds
     markdown-mode
     multi-term
     multiple-cursors
     pkg-info
+    point-undo
     popup
+    rinari
     smartparens
     undo-tree
-    web-mode
-    volatile-highlights
     undohist
-    hc-zenburn-theme
+    volatile-highlights
+    web-mode
     )
     "package list for auto install")
 (eval-when-compile
