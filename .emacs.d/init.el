@@ -17,7 +17,7 @@
               (expand-file-name (concat user-emacs-directory path))))
         (add-to-list 'load-path default-directory)
         (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
-                     (normal-top-level-add-subdirs-to-load-path))))))
+            (normal-top-level-add-subdirs-to-load-path))))))
 (add-to-load-path "elisp" "conf" "public_repos")
 
 ;; system-type predicates
@@ -58,7 +58,7 @@
     volatile-highlights
     web-mode
     )
-    "package list for auto install")
+  "package list for auto install")
 (eval-when-compile
   (require 'cl))
 (when (require 'package nil t)
@@ -97,9 +97,9 @@
 ;;;; Multi-term
 (defun ad-advised-definition-p (def) t)
 (defun multi-term-dedicated-handle-other-window-advice (def) t)
-  (when (require 'multi-term nil t)
-    ;;    (setq multi-term-program "~/.bashrc")
-    )
+(when (require 'multi-term nil t)
+  ;;    (setq multi-term-program "~/.bashrc")
+  )
 (add-hook 'term-mode-hook
           (lambda ()
             (define-key term-raw-map (kbd "C-t") 'other-window)))
@@ -108,7 +108,7 @@
 ;;;; Helm
 (require 'helm-config)
 (global-set-key (kbd "M-x") 'helm-M-x)
-  ;(global-set-key (kbd "C-x C-f") 'helm-find-files)
+                                        ;(global-set-key (kbd "C-x C-f") 'helm-find-files)
 (global-set-key (kbd "C-x C-r") 'helm-recentf)
 (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
 (global-set-key (kbd "C-c i") 'helm-imenu)
@@ -121,7 +121,7 @@
    helm-input-idle-delay 0.1 ; re-display time delay
    helm-candidate-number-limit 100 ; limit number of candidate
    helm-quick-update t ; performance up when too many candidate
-;;   helm-enable-shortcuts 'alphabet
+   ;;   helm-enable-shortcuts 'alphabet
    ) ; choose key get be alphabet
 
   (when (require 'helm-config nil t)
@@ -189,6 +189,8 @@
 ;; wdired
 (require 'wdired)
 (define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
+(setq ls-lisp-use-insert-directory-program nil) ; not use `ls --dired`
+(require 'ls-lisp)
 
 
 ;; wgrep
@@ -197,7 +199,7 @@
 ;;;; Usability
 ;; Set meta key on Mac's command key
 (when darwin-p
-    (setq ns-command-modifier (quote meta)))
+  (setq ns-command-modifier (quote meta)))
 
 ;; On カーソルコピー
 (setq mouse-drag-copy-region t)
@@ -215,13 +217,13 @@
 (setq vc-make-backup-files t)  ; on
 
 ;; Mac で GUI から起動しても、シェルの PATH 環境変数を引き継ぐ
-; - http://qiita.com/catatsuy/items/3dda714f4c60c435bb25
+                                        ; - http://qiita.com/catatsuy/items/3dda714f4c60c435bb25
 (defun exec-path-from-shell-initialize ()
-    "Set up PATH by the user's shell."
-    (interactive)
-    (let ((path-from-shell (replace-regexp-in-string "[ \t\n]*$" "" (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
-      (setenv "PATH" path-from-shell)
-          (setq exec-path (split-string path-from-shell path-separator))))
+  "Set up PATH by the user's shell."
+  (interactive)
+  (let ((path-from-shell (replace-regexp-in-string "[ \t\n]*$" "" (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq exec-path (split-string path-from-shell path-separator))))
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 
@@ -230,16 +232,23 @@
 
 ;; On 補完時の大文字小文字区別
 (setq completion-ignore-case t)
-  ;; (setq read-file-name-completion-ignore-case t)
-  ;; (setq read-buffer-completion-ignore-case t)
+;; (setq read-file-name-completion-ignore-case t)
+;; (setq read-buffer-completion-ignore-case t)
 
 ;; On 検索時の大文字小文字の区別
 (setq-default case-fold-search t)
 
 ;; On タブではなくスペースを使う
-(setq default-tab-width 2)
+                                        ; (setq default-tab-width 2)
+(setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
 (setq indent-line-function 'indent-relative-maybe)
+
+;; ediff
+;; コントロール用のバッファを同一フレーム内に表示
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+;; diffのバッファを上下ではなく左右に並べる
+(setq ediff-split-window-function 'split-window-horizontally)
 
 
 ;;;; Hook
@@ -299,24 +308,24 @@
 (show-paren-mode t)
 (setq show-paren-style 'mixed) ; `parenthesis' or `expression' or `mixed'
 ;; (set-face-background 'show-paren-match-face "#07a")
-  ;(set-face-underline-p 'show-paren-match-face "yellow")
+                                        ;(set-face-underline-p 'show-paren-match-face "yellow")
 
 ;; Show file path on title bar
-  ;(setq frame-title-format "%f")
+                                        ;(setq frame-title-format "%f")
 
 ;; Set region color
-  ; (set-face-background 'region "#22a")
+                                        ; (set-face-background 'region "#22a")
 
 ;; Set highlight on current row
 (global-hl-line-mode t)
 (set-face-background 'hl-line "#3a3f3d")
-  ;;(set-face-attribute 'highlight nil :foreground 'unspecified)
-  ;; (set-face-foreground 'highlight nil)
-  ;; (set-face-background 'highlight "#f00")
-  ;; (custom-set-faces
-  ;; '(highlight ((t (:background "#f00" :foreground "black" :bold t))))
-  ;; )
-  ;; (set-face-underline-p 'highlight "#aaf")
+;;(set-face-attribute 'highlight nil :foreground 'unspecified)
+;; (set-face-foreground 'highlight nil)
+;; (set-face-background 'highlight "#f00")
+;; (custom-set-faces
+;; '(highlight ((t (:background "#f00" :foreground "black" :bold t))))
+;; )
+;; (set-face-underline-p 'highlight "#aaf")
 
 ;; hilight trailing whitespace
 (setq-default show-trailing-whitespace t)
@@ -327,11 +336,11 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; height between row and row
-  ; (setq-default line-spacing 0)
+                                        ; (setq-default line-spacing 0)
 
 ;; enable rectangular selection
-  ;(cua-mode t)
-  ;(setq cua-enable-cua-keys (kbd "C-M-@"))
+                                        ;(cua-mode t)
+                                        ;(setq cua-enable-cua-keys (kbd "C-M-@"))
 
 ;; hide startup page
 (setq inhibit-startup-screen t)
@@ -393,5 +402,11 @@
 (define-key global-map (kbd "C-t") 'other-window)
 ;; Help key on 'C-x ?'
 (define-key global-map (kbd "C-x ?") 'help-command)
+
+
+;;;; Fix error
+;;(let ((gls "/usr/local/bin/gls"))
+;;  (if (file-exists-p gls) (setq insert-directory-program gls)))
+(defvar ruby-keyword-end-re "nil")
 
 ;;; init.el ends here

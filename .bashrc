@@ -6,7 +6,7 @@ export PATH="/usr/local/heroku/bin:$PATH"
 
 # postgre sql
 export PGDATA=/usr/local/var/postgres
-export DATABASE_URL=postgres:///$(whoami)
+# export DATABASE_URL=postgres:///$(whoami)
 
 # color
 export TERM=xterm-256color
@@ -61,4 +61,3 @@ function share_history() {
     history -r
 }
 PROMPT_COMMAND='share_history'
-
