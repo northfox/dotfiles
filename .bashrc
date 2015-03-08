@@ -1,8 +1,9 @@
-# Add RVM to PATH for scripting
-export PATH="$PATH:$HOME/.rvm/bin"
+# Path
+export PATH="$PATH:$HOME/.rvm/bin" # RVM to PATH for scripting
+export PATH="$PATH:/usr/local/heroku/bin" # Heroku Toolbelt
+export PATH="$PATH:$HOME/software/adt-bundle-mac-x86_64-20140702/sdk/tools" # SDK tools
+export PATH="$PATH:$HOME/software/adt-bundle-mac-x86_64-20140702/sdk/platform-tools" # SDK tools
 
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
 
 # postgre sql
 export PGDATA=/usr/local/var/postgres
