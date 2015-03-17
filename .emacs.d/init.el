@@ -38,6 +38,7 @@
     ac-html
     async
     auto-complete
+    coffee-mode
     dash
     emmet-mode
     epl
@@ -52,6 +53,7 @@
     pkg-info
     point-undo
     popup
+    quickrun
     rainbow-mode
     rinari
     smartparens
@@ -84,6 +86,19 @@
 
 
 ;;;; Auto mode
+
+;; coffee-mode
+(autoload 'coffee-mode "coffee-mode" "Major mode for editing CoffeeScript." t)
+(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
+(custom-set-variables
+ '(tab-width 2)
+ '(coffee-tab-width 2)
+ '(coffee-args-compile '("-c" "--bare")))
+(eval-after-load "coffee-mode"
+  '(progn
+     (define-key coffee-mode-map [(meta r)] 'coffee-compile-buffer)
+     (define-key coffee-mode-map (kbd "C-j") 'coffee-newline-and-indent)))
 
 ;; markdown-mode
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
@@ -154,10 +169,14 @@
 
 
 ;;;; Require
+;; quickrun
+(when (require 'quickrun nil t)
+  (define-key global-map [f5] 'quickrun))
+
 ;; point-undo
 (when (require 'point-undo nil t)
-  (define-key global-map [f5] 'point-undo)
-  (define-key global-map [f6] 'point-redo))
+  (define-key global-map [f1] 'point-undo)
+  (define-key global-map [f2] 'point-redo))
 
 ;; auto-complete
 (when (require 'auto-complete-config nil t)
