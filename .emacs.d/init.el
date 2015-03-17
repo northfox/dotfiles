@@ -35,6 +35,7 @@
 ;; Install package if isn't exist
 (defvar my/favorite-packages
   '(
+    ac-html
     async
     auto-complete
     dash
@@ -51,6 +52,7 @@
     pkg-info
     point-undo
     popup
+    rainbow-mode
     rinari
     smartparens
     undo-tree
@@ -90,6 +92,9 @@
 ;; web-mode
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.css$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.scss$" . web-mode))
 ;; (set-face-attribute 'web-mode-symbol-face nil :foreground "#aa0")
 ;; (set-face-attribute 'web-mode-html-tag-bracket-face nil :foreground "#777")
 ;; (set-face-attribute 'web-mode-html-tag-face nil :foreground "#aaa")
@@ -133,9 +138,6 @@
              (require 'migemo nil t))
     (require 'helm-migemo nil t))
 
-  (when (require 'helm-complete nil t)
-    (helm-lisp-complete-symbol-set-timer 150)) ; re-search lisp symbol candidate
-
   (require 'helm-show-completion nil t)
 
   (when (require 'auto-install nil t)
@@ -145,6 +147,7 @@
   ;; (when (require 'color-moccur nil t)
   ;;   (require 'helm-regexp)
   ;;   (define-key helm-moccur-map (kbd "C-s") 'moccur-from-helm-moccur))
+  ;; (helm-lisp-complete-symbol-set-timer 150)
 
   (when (require 'helm-descbinds nil t)
     (helm-descbinds-mode))) ; describe-bindings change to helm
@@ -159,7 +162,19 @@
 ;; auto-complete
 (when (require 'auto-complete-config nil t)
   (ac-config-default)
-  (define-key ac-mode-map (kbd "M-TAB") 'auto-complete))
+  (setq ac-auto-show-menu 0.3)
+  (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+  (define-key ac-completing-map (kbd "C-p") 'ac-previous)
+  (define-key ac-completing-map (kbd "C-n") 'ac-next)
+  
+  (add-hook 'html-mode-hook 'ac-html-enable)
+  (add-hook 'web-mode-hook 'ac-html-enable)
+  (add-to-list 'web-mode-ac-sources-alist
+               '("html" . (
+                           ;; attribute-value better to be first
+                           ac-source-html-attribute-value
+                           ac-source-html-tag
+                           ac-source-html-attribute))))
 
 ;; undo-tree
 (require 'undo-tree)
@@ -192,9 +207,13 @@
 (setq ls-lisp-use-insert-directory-program nil) ; not use `ls --dired`
 (require 'ls-lisp)
 
-
 ;; wgrep
 (require 'wgrep nil t)
+
+;; rainbow-mode
+(when (require 'rainbow-mode nil t)
+  (add-hook 'css-mode-hook 'rainbow-mode)
+  (add-hook 'html-mode-hook 'rainbow-mode))
 
 ;;;; Usability
 ;; Set meta key on Mac's command key
@@ -290,12 +309,14 @@
 (defun markdown-auto-compile-hook ()
   "markdown-auto-compile-hook"
   (when (eq major-mode 'markdown-mode)
-    (markdown-export) nil))
+    (markdown-export) nil)
+  )
 (add-hook 'after-save-hook 'markdown-auto-compile-hook)
 
 ;; tab-width each mode
 (add-hook 'web-mode-hook '(lambda ()
                             (setq tab-width 2)
+                            (setq web-mode-enable-css-colorization t)
                             (setq web-mode-markup-indent-offset 2)))
 
 ;; flycheck mode
