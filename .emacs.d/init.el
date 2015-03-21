@@ -223,6 +223,7 @@
 ;; wdired
 (require 'wdired)
 (define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
+(define-key dired-mode-map (kbd "C-t") 'other-window)
 (setq ls-lisp-use-insert-directory-program nil) ; not use `ls --dired`
 (require 'ls-lisp)
 
