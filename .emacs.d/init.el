@@ -47,6 +47,7 @@
     hc-zenburn-theme
     helm
     helm-descbinds
+    jade-mode
     markdown-mode
     multi-term
     multiple-cursors
@@ -108,11 +109,14 @@
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.css$" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.scss$" . web-mode))
 ;; (set-face-attribute 'web-mode-symbol-face nil :foreground "#aa0")
 ;; (set-face-attribute 'web-mode-html-tag-bracket-face nil :foreground "#777")
 ;; (set-face-attribute 'web-mode-html-tag-face nil :foreground "#aaa")
+
+;; css-mode
+(add-to-list 'auto-mode-alist '("\\.css$" . css-mode))
+(add-to-list 'auto-mode-alist '("\\.scss$" . css-mode))
+
 
 ;;;; Multi-term
 (defun ad-advised-definition-p (def) t)
@@ -169,6 +173,10 @@
 
 
 ;;;; Require
+;; jade-mode
+(require 'jade-mode)
+(add-to-list 'auto-mode-alist '("\\.jade$" . jade-mode))
+
 ;; quickrun
 (when (require 'quickrun nil t)
   (define-key global-map [f5] 'quickrun))
@@ -466,3 +474,5 @@
 (defvar ruby-keyword-end-re "nil")
 
 ;;; init.el ends here
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)

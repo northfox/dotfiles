@@ -10,3 +10,6 @@ if [ -f ~/software/eclipse/Eclipse.app/Contents/Info.plist ] ; then
     ln -sf ~/dotfiles/Info.plist ~/software/eclipse/Eclipse.app/Contents/Info.plist
 fi
 
+if [ -d ~/study/technology/repo-git/rbenv ] ; then
+    ln -sf ~/study/technology/repo-git/rbenv ~/.rbenv
+fi

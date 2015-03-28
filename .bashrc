@@ -4,7 +4,6 @@ export PATH="$PATH:/usr/local/heroku/bin" # Heroku Toolbelt
 export PATH="$PATH:$HOME/software/adt-bundle-mac-x86_64-20140702/sdk/tools" # SDK tools
 export PATH="$PATH:$HOME/software/adt-bundle-mac-x86_64-20140702/sdk/platform-tools" # SDK tools
 
-
 # postgre sql
 export PGDATA=/usr/local/var/postgres
 # export DATABASE_URL=postgres:///$(whoami)
@@ -15,12 +14,20 @@ export TERM=xterm-256color
 # alias
 if [ "$(uname)" == 'Darwin' ]; then
     # for mac
+    export PATH="$HOME/.rbenv/bin:$PATH"
+    eval "$(rbenv init -)"
+    
     alias E='emacs -nw'
+    alias E-init='emacs -nw ~/dotfiles/.emacs.d/init.el'
     alias ll='ls -alG'
     alias ls='ls -G'
     alias C='pbcopy'
     alias L='less'
     alias G='grep'
+    alias cd-central='cd ~/Dropbox/central_repo/'
+    alias cd-dotfiles='cd ~/dotfiles'
+    alias cd-practice='cd ~/study/technology/'
+    alias cd-repo='cd ~/repo'
 
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     # for linux
@@ -40,11 +47,11 @@ elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     alias la='ls -A'
     alias ll='ls -alF'
     alias ls='ls --color=auto'
-    
+
 elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
     # for cygwin
     echo "Please, set settings for cygwin."
-    
+
 else
     echo "Your platform ($(uname -a)) is not supported."
     exit 1
