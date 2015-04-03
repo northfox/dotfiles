@@ -460,6 +460,8 @@
 ;;;; Keybind
 ;; Delete backword on C-h
 (keyboard-translate ?\C-h ?\C-?)
+;; Delete word on M-h
+(define-key global-map (kbd "M-h") 'backward-kill-word)
 ;; Toggle return at max rows on 'C-c l'
 (define-key global-map (kbd "C-c l") 'toggle-truncate-lines)
 ;; Change emacs window on 'C-t'
