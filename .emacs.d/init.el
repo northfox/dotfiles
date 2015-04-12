@@ -403,8 +403,9 @@
                                         ; (setq-default line-spacing 0)
 
 ;; enable rectangular selection
-                                        ;(cua-mode t)
-                                        ;(setq cua-enable-cua-keys (kbd "C-M-@"))
+(cua-mode t)
+(define-key global-map (kbd "C-RET") 'cua-set-rectangle-mark)
+(setq cua-enable-cua-keys nil)
 
 ;; hide startup page
 (setq inhibit-startup-screen t)
@@ -469,12 +470,9 @@
 ;; Help key on 'C-x ?'
 (define-key global-map (kbd "C-x ?") 'help-command)
 
-
 ;;;; Fix error
 ;;(let ((gls "/usr/local/bin/gls"))
 ;;  (if (file-exists-p gls) (setq insert-directory-program gls)))
 (defvar ruby-keyword-end-re "nil")
 
 ;;; init.el ends here
-(put 'upcase-region 'disabled nil)
-(put 'downcase-region 'disabled nil)
