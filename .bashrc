@@ -58,9 +58,14 @@ else
     exit 1
 fi
 
-# display title on display when cd
+# display pwd on display when cd
 function chpwd() {
     ls; echo -ne "\033]0;$(pwd)\007"
+}
+
+# change title by manual
+function title() {
+    echo -ne "\033]0;"$*"\007"
 }
 
 # share command history each tab
@@ -70,3 +75,4 @@ function share_history() {
     history -r
 }
 PROMPT_COMMAND='share_history'
+
