@@ -61,6 +61,7 @@
     undo-tree
     undohist
     volatile-highlights
+    yaml-mode
     web-mode
     )
   "package list for auto install")
@@ -173,6 +174,10 @@
 
 
 ;;;; Require
+;; yaml-mode
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+
 ;; jade-mode
 (require 'jade-mode)
 (add-to-list 'auto-mode-alist '("\\.jade$" . jade-mode))
