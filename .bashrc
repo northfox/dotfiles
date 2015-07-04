@@ -19,6 +19,7 @@ if [ "$(uname)" == 'Darwin' ]; then
     export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home"
     export M2_HOME="$HOME/software/apache-maven-3.3.3"
     export PATH="$M2_HOME/bin:$PATH"
+    export JENKINS_URL="http://localhost:8080"
 
     alias E='emacs -nw'
     alias E-init='emacs -nw ~/dotfiles/.emacs.d/init.el'
