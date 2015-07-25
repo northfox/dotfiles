@@ -33,6 +33,7 @@ if [ "$(uname)" == 'Darwin' ]; then
     alias cd-practice='cd ~/study/technology/'
     alias cd-repo='cd ~/repo'
     alias exec-rbenv-bundle='rbenv exec bundle exec'
+    alias googleupdate='open /Library/Google/GoogleSoftwareUpdate/GoogleSoftwareUpdate.bundle/Contents/Resources/CheckForUpdatesNow.command'
 
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     # for linux
