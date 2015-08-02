@@ -36,6 +36,7 @@
 (defvar my/favorite-packages
   '(
     ac-html
+    all-ext
     async
     auto-complete
     coffee-mode
@@ -51,6 +52,7 @@
     markdown-mode
     multi-term
     multiple-cursors
+    php-mode
     pkg-info
     point-undo
     popup
@@ -105,6 +107,7 @@
 ;; markdown-mode
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 (setq markdown-css-path "./css/md-default.css")
+(setq markdown-command "~/.nvm/v0.10.34/bin/marked")
 
 ;; web-mode
 (require 'web-mode)
@@ -117,6 +120,9 @@
 ;; css-mode
 (add-to-list 'auto-mode-alist '("\\.css$" . css-mode))
 (add-to-list 'auto-mode-alist '("\\.scss$" . css-mode))
+
+;; php-mode
+(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
 
 
 ;;;; Multi-term
@@ -174,6 +180,9 @@
 
 
 ;;;; Require
+;; all-ext
+(require 'all-ext)
+
 ;; yaml-mode
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
@@ -463,6 +472,7 @@
 (add-to-list 'default-mode-line-format
              '(:eval (count-lines-and-chars)))
 
+
 ;;;; Keybind
 ;; Delete backword on C-h
 (keyboard-translate ?\C-h ?\C-?)
@@ -474,6 +484,28 @@
 (define-key global-map (kbd "C-t") 'other-window)
 ;; Help key on 'C-x ?'
 (define-key global-map (kbd "C-x ?") 'help-command)
+
+
+;;;; My function
+(defun align-regexp-repeated (start stop regexp)
+  "Like align-regexp, but repeated for multiple columns. See http://www.emacswiki.org/emacs/AlignCommands"
+  (interactive "r\nsAlign regexp: ")
+  (let ((spacing 1)
+        (old-buffer-size (buffer-size)))
+    ;; If our align regexp is just spaces, then we don't need any
+    ;; extra spacing.
+    (when (string-match regexp " ")
+      (setq spacing 0))
+    (align-regexp start stop
+                  ;; add space at beginning of regexp
+                  (concat "\\([[:space:]]*\\)" regexp)
+                  1 spacing t)
+    ;; modify stop because align-regexp will add/remove characters
+    (align-regexp start (+ stop (- (buffer-size) old-buffer-size))
+                  ;; add space at end of regexp
+                  (concat regexp "\\([[:space:]]*\\)")
+                  1 spacing t)))
+
 
 ;;;; Fix error
 ;;(let ((gls "/usr/local/bin/gls"))
