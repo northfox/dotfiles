@@ -31,7 +31,6 @@
       meadow-p  (featurep 'meadow)
       windows-p (or cygwin-p nt-p meadow-p w32-p))
 
-
 ;; Install package if isn't exist
 (defvar my/favorite-packages
   '(
@@ -66,7 +65,7 @@
     yaml-mode
     web-mode
     )
-  "package list for auto install")
+  "My package list what are installed auto.")
 (eval-when-compile
   (require 'cl))
 (when (require 'package nil t)
@@ -89,28 +88,31 @@
 (load-theme 'hc-zenburn t)
 
 
-;;;; Auto mode
+;;;; Auto load major-modes
 
 ;; coffee-mode
-(autoload 'coffee-mode "coffee-mode" "Major mode for editing CoffeeScript." t)
+(autoload 'coffee-mode "coffee-mode" "Major mode for editing by CoffeeScript." t)
 (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
 (add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
-(custom-set-variables
- '(tab-width 2)
- '(coffee-tab-width 2)
- '(coffee-args-compile '("-c" "--bare")))
 (eval-after-load "coffee-mode"
   '(progn
+     (custom-set-variables
+      '(tab-width 2)
+      '(coffee-tab-width 2)
+      '(coffee-args-compile '("-c" "--bare")))
      (define-key coffee-mode-map [(meta r)] 'coffee-compile-buffer)
      (define-key coffee-mode-map (kbd "C-j") 'coffee-newline-and-indent)))
 
 ;; markdown-mode
+(autoload 'coffee-mode "markdown-mode" "Major mode for editing by Markdown." t)
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-(setq markdown-css-path "./css/md-default.css")
-(setq markdown-command "~/.nvm/v0.10.34/bin/marked")
+(eval-after-load "markdown-mode"
+  '(progn
+     (setq markdown-css-path "./css/md-default.css")
+     (setq markdown-command "~/.nvm/v0.10.34/bin/marked")))
 
 ;; web-mode
-(require 'web-mode)
+(autoload 'web-mode "web-mode" "Major mode for editing web pages." t)
 (add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
 ;; (set-face-attribute 'web-mode-symbol-face nil :foreground "#aa0")
@@ -118,16 +120,26 @@
 ;; (set-face-attribute 'web-mode-html-tag-face nil :foreground "#aaa")
 
 ;; css-mode
+(autoload 'css-mode "css-mode" "Major mode for editing by CSS." t)
 (add-to-list 'auto-mode-alist '("\\.css$" . css-mode))
 (add-to-list 'auto-mode-alist '("\\.scss$" . css-mode))
 
 ;; php-mode
+(autoload 'php-mode "php-mode" "Major mode for editing by PHP." t)
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
+
+;; yaml-mode
+(autoload 'yaml-mode "yaml-mode" "Major mode for editing by YAML." t)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+
+;; jade-mode
+(autoload 'jade-mode "jade-mode" "Major mode for editing by Jade." t)
+(add-to-list 'auto-mode-alist '("\\.jade$" . jade-mode))
 
 
 ;;;; Multi-term
-(defun ad-advised-definition-p (def) t)
-(defun multi-term-dedicated-handle-other-window-advice (def) t)
+(defun ad-advised-definition-p (def) "DEF is multi-term option." t)
+(defun multi-term-dedicated-handle-other-window-advice (def) "DEF is multi-term option." t)
 (when (require 'multi-term nil t)
   ;;    (setq multi-term-program "~/.bashrc")
   )
@@ -139,7 +151,7 @@
 ;;;; Helm
 (require 'helm-config)
 (global-set-key (kbd "M-x") 'helm-M-x)
-                                        ;(global-set-key (kbd "C-x C-f") 'helm-find-files)
+;; (global-set-key (kbd "C-x C-f") 'helm-find-files) ; Needn't
 (global-set-key (kbd "C-x C-r") 'helm-recentf)
 (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
 (global-set-key (kbd "C-c i") 'helm-imenu)
@@ -183,14 +195,6 @@
 ;; all-ext
 (require 'all-ext)
 
-;; yaml-mode
-(require 'yaml-mode)
-(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-
-;; jade-mode
-(require 'jade-mode)
-(add-to-list 'auto-mode-alist '("\\.jade$" . jade-mode))
-
 ;; quickrun
 (when (require 'quickrun nil t)
   (define-key global-map [f5] 'quickrun))
@@ -209,13 +213,15 @@
   (define-key ac-completing-map (kbd "C-n") 'ac-next)
   
   (add-hook 'html-mode-hook 'ac-html-enable)
-  (add-hook 'web-mode-hook 'ac-html-enable)
-  (add-to-list 'web-mode-ac-sources-alist
-               '("html" . (
-                           ;; attribute-value better to be first
-                           ac-source-html-attribute-value
-                           ac-source-html-tag
-                           ac-source-html-attribute))))
+  (add-hook 'web-mode-hook 'ac-html-enable))
+(eval-after-load "web-mode"
+  '(progn
+     (add-to-list 'web-mode-ac-sources-alist
+                  '("html" . (
+                              ;; attribute-value better to be first
+                              ac-source-html-attribute-value
+                              ac-source-html-tag
+                              ac-source-html-attribute)))))
 
 ;; undo-tree
 (require 'undo-tree)
@@ -257,6 +263,7 @@
   (add-hook 'css-mode-hook 'rainbow-mode)
   (add-hook 'html-mode-hook 'rainbow-mode))
 
+
 ;;;; Usability
 ;; Set meta key on Mac's command key
 (when darwin-p
@@ -281,7 +288,7 @@
 
 
 ;; Show existing キーバインド when push 'M-x ...'
-(setq suggest-key-bindings 5) ; for 5 seconds
+(setq suggest-key-bindings 3) ; for 3 seconds
 
 ;; On バックアップ・自動保存 in temporary directory
 (add-to-list 'backup-directory-alist
@@ -293,7 +300,7 @@
 (setq vc-make-backup-files t)  ; on
 
 ;; Mac で GUI から起動しても、シェルの PATH 環境変数を引き継ぐ
-                                        ; - http://qiita.com/catatsuy/items/3dda714f4c60c435bb25
+;; - http://qiita.com/catatsuy/items/3dda714f4c60c435bb25
 (defun exec-path-from-shell-initialize ()
   "Set up PATH by the user's shell."
   (interactive)
@@ -315,7 +322,7 @@
 (setq-default case-fold-search t)
 
 ;; On タブではなくスペースを使う
-                                        ; (setq default-tab-width 2)
+;; (setq default-tab-width 2)
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
 (setq indent-line-function 'indent-relative-maybe)
@@ -334,7 +341,7 @@
 
 ;; Display value of elisp
 (defun elisp-mode-hooks ()
-  "elisp-mode-hooks"
+  "It's elisp-mode-hooks."
   (when (require 'eldoc nil t)
     (setq eldoc-idle-delay 0.2)
     (setq eldoc-echo-area-use-multiline-p t)
@@ -343,17 +350,18 @@
 
 ;; Don't auto-delete-whitespace on markdown-mode
 (defun markdown-turn-off-whitespace-action ()
-  "markdown-mode-turn-off-whitespace-action-hook"
+  "It's markdown-mode-turn-off-whitespace-action-hook."
   (setq whitespace-action nil))
 (add-hook 'markdown-mode-hook 'markdown-turn-off-whitespace-action)
 
 ;; As soon as compile then save on markdown-mode
-(defun markdown-auto-compile-hook ()
-  "markdown-auto-compile-hook"
-  (when (eq major-mode 'markdown-mode)
-    (markdown-export) nil)
-  )
-(add-hook 'after-save-hook 'markdown-auto-compile-hook)
+(eval-after-load "markdown-mode"
+  '(progn
+     (defun markdown-auto-compile-hook ()
+       "It's markdown-auto-compile-hook."
+       (when (eq major-mode 'markdown-mode)
+         (markdown-export) nil))
+     (add-hook 'after-save-hook 'markdown-auto-compile-hook)))
 
 ;; tab-width each mode
 (add-hook 'web-mode-hook '(lambda ()
@@ -461,7 +469,7 @@
 ;; file size
 (size-indication-mode t)
 ;; count lines/chars number with region
-(defun count-lines-and-chars ()
+(defun count-lines-and-chars () "Show amount of lines & chars."
   (if mark-active
       (format "%d lines, %d chars "
               (count-lines (region-beginning) (region-end))
@@ -488,7 +496,7 @@
 
 ;;;; My function
 (defun align-regexp-repeated (start stop regexp)
-  "Like align-regexp, but repeated for multiple columns. See http://www.emacswiki.org/emacs/AlignCommands"
+  "Like 'align-regexp', but repeated for multiple columns from START - STOP with REGEXP.  See http://www.emacswiki.org/emacs/AlignCommands."
   (interactive "r\nsAlign regexp: ")
   (let ((spacing 1)
         (old-buffer-size (buffer-size)))
