@@ -9,4 +9,5 @@
 # emacs
 /.emacs.d/*
 !/.emacs.d/init.el
+!/.emacs.d/light-init.el.bak
 !/.emacs.d/conf
