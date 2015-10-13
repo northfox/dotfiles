@@ -53,6 +53,7 @@
     multiple-cursors
     php-mode
     pkg-info
+    plantuml-mode
     point-undo
     popup
     quickrun
@@ -90,6 +91,40 @@
 
 ;;;; Auto load major-modes
 
+;; plantuml-mode
+(autoload 'plantuml-mode "plantuml-mode" "PlantUML mode" t)
+(add-to-list 'auto-mode-alist '("\\.uml\\'" . plantuml-mode))
+(setq plantuml-jar-path "/usr/local/jars/plantuml.jar")
+(setq plantuml-java-options "")
+(setq plantuml-options "-charset UTF-8 -ttxt")
+(setq plantuml-mode-map
+      (let ((map (make-sparse-keymap)))
+        (define-key map (kbd "C-c C-c") 'plantuml-execute)
+        map))
+(eval-after-load "plantuml-mode"
+  '(progn
+     (defun plantuml-execute ()
+       (interactive)
+       (when (buffer-modified-p)
+         (map-y-or-n-p "Save this buffer before executing PlantUML?"
+                       'save-buffer (list (current-buffer))))
+       (let ((code (buffer-string))
+             out-file
+             cmd)
+         (when (string-match "^\\s-*@startuml\\s-+\\(\\S-+\\)\\s*$" code)
+           (setq out-file (match-string 1 code)))
+         (setq cmd (concat
+                    "java -jar " plantuml-java-options " "
+                    (shell-quote-argument plantuml-jar-path) " "
+                    (and out-file (concat "-t" (file-name-extension out-file))) " "
+                    plantuml-options " "
+                    (buffer-file-name)))
+         (message cmd)
+         (shell-command cmd)
+         (message "done")))
+))
+
+
 ;; coffee-mode
 (autoload 'coffee-mode "coffee-mode" "Major mode for editing by CoffeeScript." t)
 (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
@@ -104,7 +139,7 @@
      (define-key coffee-mode-map (kbd "C-j") 'coffee-newline-and-indent)))
 
 ;; markdown-mode
-(autoload 'coffee-mode "markdown-mode" "Major mode for editing by Markdown." t)
+(autoload 'markdown-mode "markdown-mode" "Major mode for editing by Markdown." t)
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 (eval-after-load "markdown-mode"
   '(progn
