@@ -84,6 +84,10 @@
         (package-install pkg)))))
 
 
+;;;; theme
+(load-theme 'hc-zenburn t)
+
+
 ;;;; Auto load major-modes
 
 ;; web-mode

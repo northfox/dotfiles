@@ -6,6 +6,9 @@ ln -sf ~/dotfiles/.gemrc ~/.gemrc
 ln -sf ~/dotfiles/.zshrc ~/.zshrc
 ln -sf ~/dotfiles/.vimrc ~/.vimrc
 
+if [ -d ~/.emacs.d/elisp -o ~/.emacs.d/conf -o ~/.emacs.d/public_repos ] ; then
+    cd ~/.emacs.d/ && mkdir elisp conf public_repos
+fi
 if [ -f ~/software/eclipse/Eclipse.app/Contents/Info.plist ] ; then
     ln -sf ~/dotfiles/Info.plist ~/software/eclipse/Eclipse.app/Contents/Info.plist
 fi
