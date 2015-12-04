@@ -37,8 +37,10 @@ if [ "$(uname)" == 'Darwin' ]; then
 
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     # for linux
-    export PATH="$HOME/.rbenv/bin:$PATH"
-    eval "$(rbenv init -)"
+    if [ "$(type rbenv > /dev/null 2&>1)" == 0 ]; then
+        export PATH="$HOME/.rbenv/bin:$PATH"
+        eval "$(rbenv init -)"
+    fi
 
     alias C='cbcopy'
     alias emacs='emacs -nw'
