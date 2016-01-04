@@ -53,7 +53,7 @@
 #      - { name: tmux }
 #      - { name: reattach-to-user-namespace }
       - { name: phantomjs }
-#      - { name: graphviz }
+      - { name: graphviz }
 #      - { name: autojump }
 #      - { name: gibo }
 #      - { name: source-highlight }
