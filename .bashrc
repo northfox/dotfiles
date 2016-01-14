@@ -37,7 +37,7 @@ if [ "$(uname)" == 'Darwin' ]; then
 
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     # for linux
-    if [ "$(type rbenv > /dev/null 2&>1)" == 0 ]; then
+    if [ "$(type rbenv > /dev/null 2>&1)" == 0 ]; then
         export PATH="$HOME/.rbenv/bin:$PATH"
         eval "$(rbenv init -)"
     fi
