@@ -171,6 +171,15 @@
 (autoload 'jade-mode "jade-mode" "Major mode for editing by Jade." t)
 (add-to-list 'auto-mode-alist '("\\.jade$" . jade-mode))
 
+;; js2-mode
+(autoload 'js2-mode "js2-mode" "Major mode for editing by JavaScript." t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(eval-after-load "js2-mode"
+  '(progn
+     (custom-set-variables
+      '(tab-width 2)
+      '(js2-basic-offset 2))))
+
 
 ;;;; Multi-term
 (defun ad-advised-definition-p (def) "DEF is multi-term option." t)

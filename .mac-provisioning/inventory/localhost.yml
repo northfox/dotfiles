@@ -57,6 +57,7 @@
 #      - { name: autojump }
 #      - { name: gibo }
 #      - { name: source-highlight }
+      - { name: libmcrypt }
     homebrew_cask_packages:
       - { name: emacs-mac }
       - { name: iterm2 }
