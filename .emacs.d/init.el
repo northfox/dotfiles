@@ -44,6 +44,7 @@
     epl
     expand-region
     flycheck
+    geben
     hc-zenburn-theme
     helm
     helm-descbinds
@@ -143,7 +144,7 @@
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 (eval-after-load "markdown-mode"
   '(progn
-     (setq markdown-css-path "./css/md-default.css")
+     (setq markdown-css-paths "./css/md-default.css")
      (setq markdown-command "~/.nvm/v0.10.34/bin/marked")))
 
 ;; web-mode
