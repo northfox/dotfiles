@@ -141,10 +141,10 @@
 
 ;; markdown-mode
 (autoload 'markdown-mode "markdown-mode" "Major mode for editing by Markdown." t)
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 (eval-after-load "markdown-mode"
   '(progn
-     (setq markdown-css-paths "./css/md-default.css")
+     (setq markdown-css-paths '("./css/md-default.css"))
      (setq markdown-command "~/.nvm/v0.10.34/bin/marked")))
 
 ;; web-mode
@@ -255,18 +255,7 @@
   (setq ac-auto-show-menu 0.3)
   (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
   (define-key ac-completing-map (kbd "C-p") 'ac-previous)
-  (define-key ac-completing-map (kbd "C-n") 'ac-next)
-  
-  (add-hook 'html-mode-hook 'ac-html-enable)
-  (add-hook 'web-mode-hook 'ac-html-enable))
-(eval-after-load "web-mode"
-  '(progn
-     (add-to-list 'web-mode-ac-sources-alist
-                  '("html" . (
-                              ;; attribute-value better to be first
-                              ac-source-html-attribute-value
-                              ac-source-html-tag
-                              ac-source-html-attribute)))))
+  (define-key ac-completing-map (kbd "C-n") 'ac-next))
 
 ;; undo-tree
 (require 'undo-tree)
@@ -394,11 +383,6 @@
 (add-hook 'emacs-lisp-mode-hook 'elisp-mode-hooks)
 
 ;; Don't auto-delete-whitespace on markdown-mode
-(defun markdown-turn-off-whitespace-action ()
-  "It's markdown-mode-turn-off-whitespace-action-hook."
-  (setq whitespace-action nil))
-(add-hook 'markdown-mode-hook 'markdown-turn-off-whitespace-action)
-
 ;; As soon as compile then save on markdown-mode
 (eval-after-load "markdown-mode"
   '(progn
@@ -406,7 +390,11 @@
        "It's markdown-auto-compile-hook."
        (when (eq major-mode 'markdown-mode)
          (markdown-export) nil))
-     (add-hook 'after-save-hook 'markdown-auto-compile-hook)))
+     (add-hook 'after-save-hook 'markdown-auto-compile-hook)
+     (defun markdown-turn-off-whitespace-action ()
+       "It's markdown-mode-turn-off-whitespace-action-hook."
+       (setq whitespace-action nil))
+     (add-hook 'markdown-mode-hook 'markdown-turn-off-whitespace-action)))
 
 ;; tab-width each mode
 (add-hook 'web-mode-hook '(lambda ()
