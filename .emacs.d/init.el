@@ -237,6 +237,14 @@
 
 
 ;;;; Require
+;; ctags
+(when (require 'ctags nil t)
+  (setq tags-revert-without-query t)
+  (setq ctags-command "ctags -Re")
+  (global-set-key (kbd "C-x <f3>") 'ctags-create-or-update-tags-table)
+  (global-set-key (kbd "<f3>") 'helm-etags-select)
+  (global-set-key (kbd "M-.") 'ctags-search))
+
 ;; all-ext
 (require 'all-ext)
 

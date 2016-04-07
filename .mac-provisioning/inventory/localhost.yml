@@ -25,6 +25,7 @@
 #      - { name: automake }
 #      - { name: pkg-config }
 #      - { name: ctags }
+      - { name: ctags-exuberant }
       - { name: tree }
 #      - { name: lv }
 #      - { name: nkf }

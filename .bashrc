@@ -33,6 +33,7 @@ if [ "$(uname)" == 'Darwin' ]; then
     alias cd-dotfiles='cd ~/dotfiles'
     alias cd-practice='cd ~/study/technology/'
     alias cd-repo='cd ~/repo'
+    alias ctags="`brew --prefix`/bin/ctags"
     alias exec-rbenv-bundle='rbenv exec bundle exec'
     alias googleupdate='open /Library/Google/GoogleSoftwareUpdate/GoogleSoftwareUpdate.bundle/Contents/Resources/CheckForUpdatesNow.command'
     git config --global alias.s status
@@ -67,11 +68,6 @@ else
     exit 1
 fi
 
-# display pwd on display when cd
-function chpwd() {
-    ls; echo -ne "\033]0;$(pwd)\007"
-}
-
 # change title by manual
 function title() {
     echo -ne "\033]0;"$*"\007"
@@ -84,4 +80,6 @@ function share_history() {
     history -r
 }
 PROMPT_COMMAND='share_history'
-
+shopt -u histappend
+export HISTSIZE=9999
+export HISTCONTROL=ignoredups
