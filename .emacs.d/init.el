@@ -175,6 +175,7 @@
 ;; js2-mode
 (autoload 'js2-mode "js2-mode" "Major mode for editing by JavaScript." t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx$" . js2-mode))
 (eval-after-load "js2-mode"
   '(progn
      (custom-set-variables
@@ -186,7 +187,7 @@
 (defun ad-advised-definition-p (def) "DEF is multi-term option." t)
 (defun multi-term-dedicated-handle-other-window-advice (def) "DEF is multi-term option." t)
 (when (require 'multi-term nil t)
-  ;;    (setq multi-term-program "~/.bashrc")
+  ;;  (setq multi-term-program "~/.bashrc")
   )
 (add-hook 'term-mode-hook
           (lambda ()
@@ -491,7 +492,7 @@
 (set-buffer-file-coding-system 'utf-8)
 ;; バッファのプロセスの文字コード
 (setq default-buffer-file-coding-system 'utf-8)
-;; フ<<ァイル名の文字コード
+;; ファイル名の文字コード
 (setq file-name-coding-system 'utf-8)
 ;; Set File name on Mac *after Prefer utf-8
 (when darwin-p
@@ -520,19 +521,6 @@
     ""))
 (add-to-list 'default-mode-line-format
              '(:eval (count-lines-and-chars)))
-
-
-;;;; Keybind
-;; Delete backword on C-h
-(keyboard-translate ?\C-h ?\C-?)
-;; Delete word on M-h
-(define-key global-map (kbd "M-h") 'backward-kill-word)
-;; Toggle return at max rows on 'C-c l'
-(define-key global-map (kbd "C-c l") 'toggle-truncate-lines)
-;; Change emacs window on 'C-t'
-(define-key global-map (kbd "C-t") 'other-window)
-;; Help key on 'C-x ?'
-(define-key global-map (kbd "C-x ?") 'help-command)
 
 
 ;;;; My function
@@ -589,6 +577,26 @@
                    (call-interactively command)))
                (message "Quit")
                (throw 'end-flag t)))))))
+
+
+;;;; Keybind
+;; Delete backword on C-h
+(keyboard-translate ?\C-h ?\C-?)
+;; Delete word on M-h
+(define-key global-map (kbd "M-h") 'backward-kill-word)
+;; Toggle return at max rows on 'C-c l'
+(define-key global-map (kbd "C-c l") 'toggle-truncate-lines)
+;; Change emacs window on 'C-t'
+(define-key global-map (kbd "C-t") 'other-window)
+;; Help key on 'C-x ?'
+(define-key global-map (kbd "C-x ?") 'help-command)
+;; call favorite functions by M-RET...
+(define-key global-map (kbd "M-RET p") 'package-list-packages)
+(define-key global-map (kbd "M-RET w") 'my-window-resizer)
+(define-key global-map (kbd "M-RET r r") 'replace-regexp)
+(define-key global-map (kbd "M-RET r s") 'replace-string)
+(define-key global-map (kbd "M-RET a r") 'align-regexp-repeated)
+(define-key global-map (kbd "M-RET a s") 'align-regexp)
 
 ;;;; Fix error
 ;;(let ((gls "/usr/local/bin/gls"))
