@@ -183,6 +183,7 @@
 (autoload 'web-mode "web-mode" "Major mode for editing web pages." t)
 (add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tag$" . web-mode))
 ;; (set-face-attribute 'web-mode-symbol-face nil :foreground "#aa0")
 ;; (set-face-attribute 'web-mode-html-tag-bracket-face nil :foreground "#777")
 ;; (set-face-attribute 'web-mode-html-tag-face nil :foreground "#aaa")
