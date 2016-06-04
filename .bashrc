@@ -21,6 +21,7 @@ if [ "$(uname)" == 'Darwin' ]; then
     export PATH="$M2_HOME/bin:$PATH"
     export JENKINS_URL="http://localhost:8080"
     [[ -e ~/.phpbrew/bashrc ]] && source ~/.phpbrew/bashrc
+    [[ -L /usr/local/bin/node ]] || ln -s /usr/local/Cellar/node/6.2.0/bin/node /usr/local/bin/node
 
     alias E='emacs -nw'
     alias E-init='emacs -nw ~/dotfiles/.emacs.d/init.el'
@@ -36,6 +37,8 @@ if [ "$(uname)" == 'Darwin' ]; then
     alias ctags="`brew --prefix`/bin/ctags"
     alias exec-rbenv-bundle='rbenv exec bundle exec'
     alias googleupdate='open /Library/Google/GoogleSoftwareUpdate/GoogleSoftwareUpdate.bundle/Contents/Resources/CheckForUpdatesNow.command'
+    alias brew="env PATH=${PATH/`echo ~`\/.phpbrew\/php\/php-5.6.18\/bin:/} brew"
+
     git config --global alias.s status
 
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
