@@ -1,8 +1,6 @@
 # Path
 #export PATH="$PATH:$HOME/.rvm/bin" # RVM to PATH for scripting
 export PATH="$PATH:/usr/local/heroku/bin" # Heroku Toolbelt
-export PATH="$PATH:$HOME/software/adt-bundle-mac-x86_64-20140702/sdk/tools" # SDK tools
-export PATH="$PATH:$HOME/software/adt-bundle-mac-x86_64-20140702/sdk/platform-tools" # SDK tools
 
 # postgre sql
 export PGDATA=/usr/local/var/postgres
@@ -14,6 +12,8 @@ export TERM=xterm-256color
 # alias
 if [ "$(uname)" == 'Darwin' ]; then
     # for mac
+    ## export PATH="$PATH:$HOME/software/adt-bundle-mac-x86_64-20140702/sdk/tools" # SDK tools
+    ## export PATH="$PATH:$HOME/software/adt-bundle-mac-x86_64-20140702/sdk/platform-tools" # SDK tools
     export PATH="$HOME/.rbenv/bin:$PATH:~/.composer/vendor/bin"
     eval "$(rbenv init -)"
     export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home"

@@ -36,6 +36,7 @@
   '(
     ac-html
     all-ext
+    anzu
     async
     auto-complete
     coffee-mode
@@ -50,6 +51,7 @@
     helm
     helm-descbinds
     jade-mode
+    js2-mode
     markdown-mode
     multi-term
     multiple-cursors
@@ -271,6 +273,13 @@
 
 
 ;;;; Require
+;; anzu
+(global-anzu-mode +1)
+(custom-set-variables
+ '(anzu-mode-lighter "")
+ '(anzu-deactivate-region t)
+ '(anzu-search-threshold 1000))
+
 ;; ctags
 (when (require 'ctags nil t)
   (setq tags-revert-without-query t)

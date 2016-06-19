@@ -5,6 +5,7 @@ ln -sf ~/dotfiles/.emacs.d ~/.emacs.d
 ln -sf ~/dotfiles/.gemrc ~/.gemrc
 ln -sf ~/dotfiles/.zshrc ~/.zshrc
 ln -sf ~/dotfiles/.vimrc ~/.vimrc
+ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
 
 if [ -d ~/.emacs.d/elisp -o ~/.emacs.d/conf -o ~/.emacs.d/public_repos ] ; then
     cd ~/.emacs.d/ && mkdir elisp conf public_repos
