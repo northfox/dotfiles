@@ -38,8 +38,7 @@ if [ "$(uname)" == 'Darwin' ]; then
     alias exec-rbenv-bundle='rbenv exec bundle exec'
     alias googleupdate='open /Library/Google/GoogleSoftwareUpdate/GoogleSoftwareUpdate.bundle/Contents/Resources/CheckForUpdatesNow.command'
     alias brew="env PATH=${PATH/`echo ~`\/.phpbrew\/php\/php-5.6.18\/bin:/} brew"
-
-    git config --global alias.s status
+    alias simpledate='date -u +"%Y%m%d"'
 
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     # for linux
