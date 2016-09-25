@@ -24,7 +24,7 @@ if [ "$(uname)" == 'Darwin' ]; then
     [[ -L /usr/local/bin/node ]] || ln -s /usr/local/Cellar/node/6.2.0/bin/node /usr/local/bin/node
 
     alias E='emacs -nw'
-    alias E-init='emacs -nw ~/dotfiles/.emacs.d/init.el'
+    alias E-init='emacs -nw ~/dotfiles/.emacs.d/init.el --debug-init'
     alias ll='ls -alG'
     alias ls='ls -G'
     alias C='pbcopy'
