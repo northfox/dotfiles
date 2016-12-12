@@ -52,6 +52,7 @@
     helm-descbinds
     jade-mode
     js2-mode
+    magit
     markdown-mode
     multi-term
     multiple-cursors
@@ -273,6 +274,9 @@
 
 
 ;;;; Require
+;; magit
+(require 'magit)
+
 ;; anzu
 (global-anzu-mode +1)
 (custom-set-variables
