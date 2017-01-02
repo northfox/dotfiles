@@ -42,6 +42,7 @@
     coffee-mode
     company
     dash
+    editorconfig
     emmet-mode
     epl
     expand-region
@@ -274,6 +275,10 @@
 
 
 ;;;; Require
+;; editorconfig
+(require 'editorconfig)
+(editorconfig-mode 1)
+
 ;; magit
 (require 'magit)
 
