@@ -542,7 +542,7 @@
 ;; ファイルのバッファのデフォルト文字コード
 (set-buffer-file-coding-system 'utf-8)
 ;; バッファのプロセスの文字コード
-(setq default-buffer-file-coding-system 'utf-8)
+(setq buffer-file-coding-system 'utf-8)
 ;; ファイル名の文字コード
 (setq file-name-coding-system 'utf-8)
 ;; Set File name on Mac *after Prefer utf-8
@@ -628,6 +628,33 @@
                    (call-interactively command)))
                (message "Quit")
                (throw 'end-flag t)))))))
+
+(defun unescape-unicode-region (start end)
+  "Unescape unicode chars(\\uXXXX) between START - END."
+  (interactive "*r")
+  (save-restriction
+    (narrow-to-region start end)
+    (goto-char (point-min))
+    (while (re-search-forward "\\\\u\\([[:xdigit:]]\\{4\\}\\)" nil t)
+      (replace-match (string (unicode-char
+                              (string-to-number (match-string 1) 16)))
+                     nil t))))
+
+(defun escape-unicode-region (&optional start end)
+  "Escape unicode chars(\\uXXXX) between START - END."
+  (interactive "*r")
+  (save-restriction
+    (narrow-to-region start end)
+    (goto-char (point-min))
+    (while (re-search-forward "." nil t)
+      (replace-match (format "\\u%04x"
+                             (char-unicode
+                              (char (match-string 0) 0)))
+                     nil t))))
+
+;; Check it -> http://github.com/kosh04/emacs-lisp > xyzzy.el
+(defun char-unicode (char) "Encode CHAR to unicode." (encode-char char 'ucs))
+(defun unicode-char (code) "Decode CODE to char." (decode-char 'ucs code))
 
 
 ;;;; Keybind
