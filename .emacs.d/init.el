@@ -182,6 +182,15 @@
   '(progn
      (setq markdown-css-paths '("./css/md-default.css"))
      (setq markdown-command "~/.nvm/v0.10.34/bin/marked")))
+;; (defun cleanup-org-tables () "Support table in markdown-mode."
+;;   (save-excursion
+;;     (goto-char (point-min))
+;;     (while (search-forward "-+-" nil t) (replace-match "-|-"))))
+;; (add-hook 'markdown-mode-hook 'orgtbl-mode)
+;; (add-hook 'markdown-mode-hook
+;;           #'(lambda()
+;;               (add-hook 'after-save-hook 'cleanup-org-tables  nil 'make-it-local)))
+
 
 ;; web-mode
 (autoload 'web-mode "web-mode" "Major mode for editing web pages." t)
