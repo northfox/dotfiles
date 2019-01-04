@@ -64,7 +64,7 @@
     php-mode
     pkg-info
     plantuml-mode
-    point-undo
+;    point-undo
     popup
     quickrun
     rainbow-mode
@@ -539,7 +539,7 @@
 
 ;; enable rectangular selection
 (cua-mode t)
-(define-key global-map (kbd "C-RET") 'cua-set-rectangle-mark)
+(bind-key* "C-^" 'cua-set-rectangle-mark)
 (setq cua-enable-cua-keys nil)
 
 ;; hide startup page
