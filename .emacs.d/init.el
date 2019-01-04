@@ -9,6 +9,9 @@
 (when (> emacs-major-version 23)
   (defvar user-emacs-directory "~/.emacs.d"))
 
+(if (string-match "26" emacs-version)
+    (setq default-mode-line-format (default-value 'mode-line-format)))
+
 ;; Add load_path "~/.emacs.d/[elisp conf public_repos]"
 (defun add-to-load-path (&rest paths)
   (let (path)
@@ -39,6 +42,7 @@
     anzu
     async
     auto-complete
+    bind-key
     coffee-mode
     company
     dash
@@ -79,7 +83,7 @@
   (require 'cl))
 (when (require 'package nil t)
   (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-  (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+  ;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
   (package-initialize)
   (let ((pkgs (loop for pkg in my/favorite-packages
                     unless (package-installed-p pkg)
@@ -294,9 +298,16 @@
 ;; anzu
 (global-anzu-mode +1)
 (custom-set-variables
- '(anzu-mode-lighter "")
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(anzu-deactivate-region t)
- '(anzu-search-threshold 1000))
+ '(anzu-mode-lighter "")
+ '(anzu-search-threshold 1000)
+ '(package-selected-packages
+   (quote
+    (yaml-mode wgrep web-mode volatile-highlights undohist undo-tree tide smartparens slim-mode rinari rainbow-mode quickrun puml-mode point-undo plantuml-mode php-mode multiple-cursors multi-term markdown-mode magit jade-mode helm-descbinds hc-zenburn-theme groovy-mode geben expand-region emmet-mode editorconfig ctags-update ctags company coffee-mode anzu all-ext ac-js2 ac-html-bootstrap ac-html 0blayout))))
 
 ;; ctags
 (when (require 'ctags nil t)
@@ -667,23 +678,24 @@
 
 
 ;;;; Keybind
+(require `bind-key)
 ;; Delete backword on C-h
 (keyboard-translate ?\C-h ?\C-?)
 ;; Delete word on M-h
-(define-key global-map (kbd "M-h") 'backward-kill-word)
+(bind-key "M-h" 'backward-kill-word)
 ;; Toggle return at max rows on 'C-c l'
-(define-key global-map (kbd "C-c l") 'toggle-truncate-lines)
+(bind-key "C-c l" 'toggle-truncate-lines)
 ;; Change emacs window on 'C-t'
-(define-key global-map (kbd "C-t") 'other-window)
+(bind-key "C-t" 'other-window)
 ;; Help key on 'C-x ?'
-(define-key global-map (kbd "C-x ?") 'help-command)
+(bind-key "C-x ?" 'help-command)
 ;; call favorite functions by M-RET...
-(define-key global-map (kbd "M-RET p") 'package-list-packages)
-(define-key global-map (kbd "M-RET w") 'my-window-resizer)
-(define-key global-map (kbd "M-RET r r") 'replace-regexp)
-(define-key global-map (kbd "M-RET r s") 'replace-string)
-(define-key global-map (kbd "M-RET a r") 'align-regexp-repeated)
-(define-key global-map (kbd "M-RET a s") 'align-regexp)
+(bind-key* "M-RET p" 'package-list-packages)
+(bind-key* "M-RET w" 'my-window-resizer)
+(bind-key* "M-RET r r" 'replace-regexp)
+(bind-key* "M-RET r s" 'replace-string)
+(bind-key* "M-RET a r" 'align-regexp-repeated)
+(bind-key* "M-RET a s" 'align-regexp)
 
 ;;;; Fix error
 ;;(let ((gls "/usr/local/bin/gls"))
@@ -691,3 +703,9 @@
 (defvar ruby-keyword-end-re "nil")
 
 ;;; init.el ends here
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
