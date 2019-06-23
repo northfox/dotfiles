@@ -185,7 +185,7 @@
 (eval-after-load "markdown-mode"
   '(progn
      (setq markdown-css-paths '("./css/md-default.css"))
-     (setq markdown-command "~/.nvm/v0.10.34/bin/marked")))
+     (setq markdown-command "~/.nodebrew/current/bin/marked")))
 ;; (defun cleanup-org-tables () "Support table in markdown-mode."
 ;;   (save-excursion
 ;;     (goto-char (point-min))
@@ -285,9 +285,19 @@
 
   (when (require 'helm-descbinds nil t)
     (helm-descbinds-mode))) ; describe-bindings change to helm
-
+(helm-mode 1)
 
 ;;;; Require
+;; which-key
+(require 'which-key)
+(which-key-mode)
+(define-key which-key-mode-map (kbd "C-x <f5>") 'which-key-C-h-dispatch)
+
+;; neotree
+(require 'neotree)
+(global-set-key [f8] 'neotree-toggle)
+
+
 ;; editorconfig
 (require 'editorconfig)
 (editorconfig-mode 1)
@@ -305,9 +315,11 @@
  '(anzu-deactivate-region t)
  '(anzu-mode-lighter "")
  '(anzu-search-threshold 1000)
+ '(js-indent-level 2)
  '(package-selected-packages
    (quote
-    (yaml-mode wgrep web-mode volatile-highlights undohist undo-tree tide smartparens slim-mode rinari rainbow-mode quickrun puml-mode point-undo plantuml-mode php-mode multiple-cursors multi-term markdown-mode magit jade-mode helm-descbinds hc-zenburn-theme groovy-mode geben expand-region emmet-mode editorconfig ctags-update ctags company coffee-mode anzu all-ext ac-js2 ac-html-bootstrap ac-html 0blayout))))
+    (neotree which-key yaml-mode wgrep web-mode volatile-highlights undohist undo-tree tide smartparens slim-mode rinari rainbow-mode quickrun puml-mode point-undo plantuml-mode php-mode multiple-cursors multi-term markdown-mode magit jade-mode helm-descbinds hc-zenburn-theme groovy-mode geben expand-region emmet-mode editorconfig ctags-update ctags company coffee-mode anzu all-ext ac-js2 ac-html-bootstrap ac-html 0blayout)))
+ '(tab-width 2))
 
 ;; ctags
 (when (require 'ctags nil t)
@@ -484,6 +496,7 @@
 
 ;; flycheck mode
 (add-hook 'after-init-hook #'global-flycheck-mode)
+(setq js2-strict-missing-semi-warning nil)
 
 
 ;;;; Interface
