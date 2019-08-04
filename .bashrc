@@ -18,7 +18,7 @@ if [ "$(uname)" == 'Darwin' ]; then
     ## export PATH="$PATH:$HOME/software/adt-bundle-mac-x86_64-20140702/sdk/platform-tools" # SDK tools
     export PATH="$HOME/.rbenv/bin:$PATH:~/.composer/vendor/bin"
     eval "$(rbenv init -)"
-    export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home"
+    export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-12.0.2.jdk/Contents/Home"
     export M2_HOME="$HOME/software/apache-maven-3.3.3"
     export PATH="$M2_HOME/bin:$PATH"
     export JENKINS_URL="http://localhost:8080"
