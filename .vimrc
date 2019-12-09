@@ -107,6 +107,8 @@ cnoremap <Up> <C-p>
 cnoremap <C-n> <Down>
 cnoremap <Down> <C-n>
 
+" backupskip
+set backupskip=/tmp/*,/private/tmp/*
 
 "cnoremap <C-a> <Home>
 "cnoremap <C-b> <Left>
