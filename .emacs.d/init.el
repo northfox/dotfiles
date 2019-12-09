@@ -318,7 +318,7 @@
  '(js-indent-level 2)
  '(package-selected-packages
    (quote
-    (neotree which-key yaml-mode wgrep web-mode volatile-highlights undohist undo-tree tide smartparens slim-mode rinari rainbow-mode quickrun puml-mode point-undo plantuml-mode php-mode multiple-cursors multi-term markdown-mode magit jade-mode helm-descbinds hc-zenburn-theme groovy-mode geben expand-region emmet-mode editorconfig ctags-update ctags company coffee-mode anzu all-ext ac-js2 ac-html-bootstrap ac-html 0blayout)))
+    (mmm-mode vue-mode neotree which-key yaml-mode wgrep web-mode volatile-highlights undohist undo-tree tide smartparens slim-mode rinari rainbow-mode quickrun puml-mode point-undo plantuml-mode php-mode multiple-cursors multi-term markdown-mode magit jade-mode helm-descbinds hc-zenburn-theme groovy-mode geben expand-region emmet-mode editorconfig ctags-update ctags company coffee-mode anzu all-ext ac-js2 ac-html-bootstrap ac-html 0blayout)))
  '(tab-width 2))
 
 ;; ctags

@@ -1,5 +1,5 @@
 # Path
-export PATH=/usr/local//bin:$PATH
+export PATH=/usr/local//bin:/usr/local/sbin:$PATH
 
 #export PATH="$PATH:$HOME/.rvm/bin" # RVM to PATH for scripting
 export PATH="$PATH:/usr/local/heroku/bin" # Heroku Toolbelt
@@ -16,8 +16,8 @@ if [ "$(uname)" == 'Darwin' ]; then
     # for mac
     ## export PATH="$PATH:$HOME/software/adt-bundle-mac-x86_64-20140702/sdk/tools" # SDK tools
     ## export PATH="$PATH:$HOME/software/adt-bundle-mac-x86_64-20140702/sdk/platform-tools" # SDK tools
-    export PATH="$HOME/.rbenv/bin:$PATH:~/.composer/vendor/bin"
-    eval "$(rbenv init -)"
+    ## export PATH="$HOME/.rbenv/bin:$PATH:~/.composer/vendor/bin"
+    ## eval "$(rbenv init -)"
     export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-12.0.2.jdk/Contents/Home"
     export M2_HOME="$HOME/software/apache-maven-3.3.3"
     export PATH="$M2_HOME/bin:$PATH"
@@ -47,7 +47,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     if [ "$(type rbenv > /dev/null 2>&1)" == 0 ]; then
         export PATH="$HOME/.rbenv/bin:$PATH"
         eval "$(rbenv init -)"
-    fi
+    fi                 
 
     alias C='cbcopy'
     alias emacs='emacs -nw'
