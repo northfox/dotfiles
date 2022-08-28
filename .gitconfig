@@ -39,3 +39,5 @@
   editor = emacs
 [push]
   default = matching
+[init]
+  defaultBranch = main

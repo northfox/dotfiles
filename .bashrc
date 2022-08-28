@@ -23,7 +23,6 @@ if [ "$(uname)" == 'Darwin' ]; then
     export PATH="$M2_HOME/bin:$PATH"
     export JENKINS_URL="http://localhost:8080"
     [[ -e ~/.phpbrew/bashrc ]] && source ~/.phpbrew/bashrc
-    [[ -L /usr/local/bin/node ]] || ln -s /usr/local/Cellar/node/6.2.0/bin/node /usr/local/bin/node
 
     alias E='emacs -nw'
     alias E-init='emacs -nw ~/dotfiles/.emacs.d/init.el --debug-init'
@@ -91,3 +90,6 @@ export HISTCONTROL=ignoreboth
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# heroku autocomplete setup
+HEROKU_AC_BASH_SETUP_PATH=/Users/vulpes/Library/Caches/heroku/autocomplete/bash_setup && test -f $HEROKU_AC_BASH_SETUP_PATH && source $HEROKU_AC_BASH_SETUP_PATH;

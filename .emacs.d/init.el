@@ -9,7 +9,7 @@
 (when (> emacs-major-version 23)
   (defvar user-emacs-directory "~/.emacs.d"))
 
-(if (string-match "26" emacs-version)
+(if (> emacs-major-version 26)
     (setq default-mode-line-format (default-value 'mode-line-format)))
 
 ;; Add load_path "~/.emacs.d/[elisp conf public_repos]"
@@ -82,7 +82,9 @@
 (eval-when-compile
   (require 'cl))
 (when (require 'package nil t)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  ;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+  ;(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
   ;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
   (package-initialize)
   (let ((pkgs (loop for pkg in my/favorite-packages
